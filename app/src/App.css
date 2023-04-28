@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+}
+
+.background-main{
+  background-image: url("assets/Pokemon.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+}
+
+.background-card{
+  background-image: url("assets/pokebolas.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  display: flex;
+}
+
+.background-table{
+  background-color: darkslategray;
+  height: 100%;
+}
