@@ -37,7 +37,7 @@ const GridPokemon = ({listPokemon, pokemonImage}: Props) => {
                         xs={10}
                         md={5}
                         lg={3}
-                        sx={{ backgroundColor: '#FFFFFF' }}
+                        sx={{ backgroundColor: '#FFFFFF', boxShadow: 10, borderRadius: 1}}
                         margin={2}
                         paddingTop={'10px'}
                     >
@@ -50,7 +50,6 @@ const GridPokemon = ({listPokemon, pokemonImage}: Props) => {
                                 style={{ height: "200px", margin: "auto" }}
                             />
                         </Box>
-
                         <Link underline="none" color="secondary" href={`/SeeDetails/${pokemon.name}`}>See details</Link>
                     </Grid>
                 );

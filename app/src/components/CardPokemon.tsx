@@ -6,8 +6,8 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 interface Props {
     pokemonStats: Array<Stats>,
     pokemonAbilities: Array<Ability>,
-    evolutionsMedia: Array<TotalEvolutionsMedia>,
-    evolutionsFinal: Array<TotalEvolutionsFinal>,
+    evolutionsMedia: Array<String>,
+    evolutionsFinal: Array<String>,
     pokemon: Pokemon,
     pokemonName: string,
     pokemonImage: string,
@@ -44,8 +44,8 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
 
     const [stats, setStats] = useState<Array<Stats>>([]);
     const [ability, setAbility] = useState<Array<Ability>>([]);
-    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<TotalEvolutionsMedia>>([]);
-    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<TotalEvolutionsFinal>>([]);
+    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
+    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
 
     const evo = true;
 
@@ -137,7 +137,7 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                                 <Typography variant="body2" color="text.primary" align='center'>
                                     {totalEvolutionsMedia?.map((media) => (
                                         <Link onClick={click} underline='none' href={`/SeeDetails/${media}`} >
-                                           {/*  <Typography color="text.primary" variant="body2" align='center'>{media.evolution}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> */}
+                                          <Typography color="text.primary" variant="body2" align='center'>{media}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> 
                                         </Link>
                                     ))}
                                 </Typography>
@@ -154,7 +154,7 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                                 <Typography variant="body2" color="text.primary" align='center'>
                                     {totalEvolutionsFinal?.map(final => (
                                         <Link onClick={click} underline='none' href={`/SeeDetails/${final}`}>
-                                           {/*  <Typography color="text.primary" variant="body2" align='center'>{final.evolution}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> */}
+                                             <Typography color="text.primary" variant="body2" align='center'>{final}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> 
                                         </Link>
                                     ))}
                                 </Typography>

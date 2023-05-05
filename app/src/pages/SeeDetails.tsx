@@ -30,10 +30,10 @@ const SeeDetails = () => {
     const [pokemonEvolutionsId, setPokemonEvolutionsId] = useState();
     const [loading, setLoading] = useState(false);
     const [evolutionOne, setEvolutionOne] = useState('');
-    const [evolutionTwo, setEvolutionTwo] = useState<any>([]);
-    const [evolutionTree, setEvolutionTree] = useState<any>([]);
-    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<any[]>([]);
-    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<any[]>([]);
+    const [evolutionTwo, setEvolutionTwo] = useState<Array<String>>([]);
+    const [evolutionTree, setEvolutionTree] = useState<Array<String>>([]);
+    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
+    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
     const [dataEvolution, setDataEvolution] = useState<String | null>();
 
     useEffect(() => {
@@ -107,7 +107,8 @@ const SeeDetails = () => {
                 if (evolutionTree[i] !== null) {
                     //setTotalEvolutionsFinal((evolutionTree[i]));
                   
-                    setTotalEvolutionsFinal(prevList => [...prevList, evolutionTree[i]]);
+                   // setTotalEvolutionsFinal(prevList => [...prevList, evolutionTree[i]]);
+                    setTotalEvolutionsFinal(prevList => prevList.concat(evolutionTree[i]));
                 }
             }
         }

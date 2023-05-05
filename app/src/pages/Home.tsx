@@ -15,7 +15,7 @@ const Home = () => {
     const [listPokemon, setListPokemon] = useState([])
     const [names, setNames] = useState([])
     const [pokemonImage, setPokemonImage] = useState((Object));
-    const [count, setCount] = useState<number>()
+    const [count, setCount] = useState<any>()
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
@@ -33,7 +33,7 @@ const Home = () => {
 
                 console.log(names);
 
-                setCount((res.data.count / 20) + (res.data.count % 20))
+                setCount(((res.data.count / 20) + (res.data.count % 20)))
             })
     }, [page])
 
