@@ -1,21 +1,28 @@
-import { Box, Grid, Link, Typography } from '@mui/material';
+import { Box, Grid, Link } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import CardPokemon from '../components/CardPokemon';
-import { getPokemonesById, getSpeciesPokemon, getEvolutions } from '../api/apis';
+import { getPokemonesByName, getSpeciesPokemon, getEvolutions } from '../api/apis';
 import NotFound from '../components/NotFound';
 import Loading from '../components/Loading';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ButtonBack from '../components/ButtonBack';
 import theme from '../assets/Theme';
 
+interface Evolutions {
+    species: {
+      name: string
+    }
+    evolves_to: any
+  }
+
 const SeeDetails = () => {
 
-    const paramsId = useParams();
+    //const {paramsId} = useParams();
 
-    const [pokemon, setPokemon] = useState('');
+    const {name} = useParams();
+
+    const [pokemon, setPokemon] = useState<any>('');
     const [pokemonImage, setPokemonImage] = useState('');
     const [pokemonAbilities, setPokemonAbilities] = useState([])
     const [pokemonStats, setPokemonStats] = useState([])
@@ -23,25 +30,25 @@ const SeeDetails = () => {
     const [pokemonEvolutionsId, setPokemonEvolutionsId] = useState();
     const [loading, setLoading] = useState(false);
     const [evolutionOne, setEvolutionOne] = useState('');
-    const [evolutionTwo, setEvolutionTwo] = useState([]);
-    const [evolutionTree, setEvolutionTree] = useState([]);
-    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState([]);
-    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState([]);
-    const [dataEvolution, setDataEvolution] = useState('');
+    const [evolutionTwo, setEvolutionTwo] = useState<any>([]);
+    const [evolutionTree, setEvolutionTree] = useState<any>([]);
+    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<any[]>([]);
+    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<any[]>([]);
+    const [dataEvolution, setDataEvolution] = useState<String | null>();
 
     useEffect(() => {
         data();
-    }, [paramsId])
+    }, [name])
 
     useEffect(() => {
         getData();
-    }, [paramsId])
+    }, [name])
 
     const data = () => {
 
         setLoading(true)
 
-        getPokemonesById(paramsId.id)
+        getPokemonesByName(name)
 
             .then((res) => {
                 setPokemon(res.data);
@@ -52,7 +59,11 @@ const SeeDetails = () => {
 
                 //if (res.data.evolution_chain?.url === null) { // Verifica si la URL no es null
 
-                getSpeciesPokemon(paramsId.id)
+                let speciesId = res.data.species.url.split("/")[6];
+                /* console.log(speciesId) */
+        
+               
+                getSpeciesPokemon(parseInt(speciesId))
                     .then((res) => {
                         setPokemonEvolutionsId(res.data.evolution_chain.url)
                         const evoId = (res.data.evolution_chain.url).split('/')[6];
@@ -60,9 +71,9 @@ const SeeDetails = () => {
                         getEvolutions(parseInt(evoId))
                             .then((res) => {
                                 setEvolutionOne(res.data.chain.species.name);
-                                setEvolutionTwo(res.data.chain.evolves_to?.map((item) => item.species.name));
-                                setEvolutionTree(res.data.chain.evolves_to?.map((item) => item.evolves_to?.map((item) => item.species.name)));
-                                check(res.data.chain.species.name, res.data.chain.evolves_to?.map((item) => item.species.name), res.data.chain.evolves_to?.map((item) => item.evolves_to?.map((item) => item.species.name)));
+                                setEvolutionTwo(res.data.chain.evolves_to?.map((item: Evolutions) => item.species.name));
+                                setEvolutionTree(res.data.chain.evolves_to?.map((item : Evolutions) => item.evolves_to?.map((item: Evolutions) => item.species.name)));
+                                check(res.data.chain.species.name, res.data.chain.evolves_to?.map((item : Evolutions) => item.species.name), res.data.chain.evolves_to?.map((item : Evolutions) => item.evolves_to?.map((item : Evolutions) => item.species.name)));
                             })
                     });
                 // } else { 
@@ -75,7 +86,7 @@ const SeeDetails = () => {
             )
     }
 
-    const check = (evolutionOne, evolutionTwo, evolutionTree) => {
+    const check = (evolutionOne: String, evolutionTwo: any[], evolutionTree: any[]) => {
 
         //if (evolutionTwo !== null && evolutionTwo !== undefined && evolutionTree === 0) {
         if (Array.isArray(evolutionTwo) && evolutionTwo?.length > 0) {
@@ -94,10 +105,10 @@ const SeeDetails = () => {
         if (Array.isArray(evolutionTree) && evolutionTree?.length > 0) {
             for (let i = 0; i < evolutionTree.length; i++) {
                 if (evolutionTree[i] !== null) {
-                    setTotalEvolutionsFinal((evolutionTree[i]));
-                    // setTotalEvolutionsFinal(evolutionTree.map((item) => item));
+                    //setTotalEvolutionsFinal((evolutionTree[i]));
+                  
+                    setTotalEvolutionsFinal(prevList => [...prevList, evolutionTree[i]]);
                 }
-
             }
         }
         else {
@@ -151,10 +162,10 @@ const SeeDetails = () => {
                         {dataEvolution == null ?
                         (
                         <Box display="flex" flexDirection="row" justifyContent="space-between">
-                        <Link underline='none' href={`/SeeDetails/${pokemon.id === 1 ? 1 : pokemon.id - 1}`}><button><KeyboardArrowLeftIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                       {/*  <Link underline='none' href={`/SeeDetails/${pokemon.id === 1 ? 1 : pokemon.id - 1}`}><button><KeyboardArrowLeftIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
                         </Link>
                         <Link underline='none' href={`/SeeDetails/${pokemon.id + 1}`}><button><KeyboardArrowRightIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
-                        </Link>
+                        </Link> */}
                         </Box>
                         )
                          : (
@@ -175,15 +186,15 @@ const SeeDetails = () => {
                             pokemonHeight={pokemon.height}
                             pokemonWeight={pokemon.weight}
                             pokemonEvolutionOne={evolutionOne}
-                            totalEvolutionsMedia={totalEvolutionsMedia}
-                            totalEvolutionsFinal={totalEvolutionsFinal}
+                            evolutionsMedia={totalEvolutionsMedia}
+                            evolutionsFinal={totalEvolutionsFinal}
                         />
 
                         
                     </Box>
 
                     {dataEvolution == null ?
-                        <Box display="flex" direction="column" justifyContent="right" alignItems="right" >
+                        <Box display="flex"  justifyContent="right" alignItems="right" > {/* SAQUE direction="column" */}
                         <Link underline='none' href='/home'><button><HomeRoundedIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
                         </Link>
                     </Box>

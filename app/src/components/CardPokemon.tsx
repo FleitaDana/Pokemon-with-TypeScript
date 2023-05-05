@@ -1,47 +1,76 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography, Grid, CardHeader, Link } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import img from '../assets/notFound.png';
+//import img from '../assets/notFound.png';
 
-const CardPokemon = (props) => {
+interface Props {
+    pokemonStats: Array<Stats>,
+    pokemonAbilities: Array<Ability>,
+    evolutionsMedia: Array<TotalEvolutionsMedia>,
+    evolutionsFinal: Array<TotalEvolutionsFinal>,
+    pokemon: Pokemon,
+    pokemonName: string,
+    pokemonImage: string,
+    pokemonWeight: number,
+    pokemonHeight: number,
+    pokemonEvolutionOne: string,
+    pokemonSpecies: any,
+}
 
-    const [stats, setStats] = useState([]);
-    const [ability, setAbility] = useState([]);
-    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState([]);
-    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState([]);
+interface Stats {
+    stat: { name: string },
+    base_stat: number,
+}
+
+interface Pokemon {
+    id: number,
+}
+
+interface Ability {
+    ability: { name: string },
+}
+
+interface TotalEvolutionsMedia {
+    evolution: string,
+}
+
+interface TotalEvolutionsFinal {
+    evolution: string,
+}
+
+const img = "../assets/notFound.png"
+
+const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutionsFinal, pokemon, pokemonName, pokemonImage, pokemonWeight, pokemonHeight, pokemonEvolutionOne} : Props) => {
+
+    const [stats, setStats] = useState<Array<Stats>>([]);
+    const [ability, setAbility] = useState<Array<Ability>>([]);
+    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<TotalEvolutionsMedia>>([]);
+    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<TotalEvolutionsFinal>>([]);
 
     const evo = true;
 
-    // function saveData (event) {
-    //  console.log("ESTOY EN SAVE DATA")
-    // localStorage.setItem('evoMedia', true)
-    // console.log("ESTOY EN SAVE DATA")
-    // console.log(localStorage.setItem('evoMedia'))
-    // }
-
-
     function click() {
-        localStorage.setItem('evoMedia', evo)
+        localStorage.setItem('evoMedia', String(evo))
     }
 
     useEffect(() => {
-        setStats(props.pokemonStats)
-    }, [props.pokemonStats])
+        setStats(pokemonStats)
+    }, [pokemonStats])
 
     useEffect(() => {
-        setAbility(props.pokemonAbilities)
-    }, [props.pokemonAbilities])
+        setAbility(pokemonAbilities)
+    }, [pokemonAbilities])
 
     useEffect(() => {
-        setTotalEvolutionsMedia(props.totalEvolutionsMedia);
+        setTotalEvolutionsMedia(evolutionsMedia);
         //console.log(props.totalEvolutionsMedia)
 
-    }, [props.totalEvolutionsMedia])
+    }, [evolutionsMedia])
 
     useEffect(() => {
-        setTotalEvolutionsFinal(props.totalEvolutionsFinal);
+        setTotalEvolutionsFinal(evolutionsFinal);
         //console.log("totalEvolutionsFinal de la card", props.totalEvolutionsFinal)
-    }, [props.totalEvolutionsFinal])
+    }, [evolutionsFinal])
 
     return (
         <Grid
@@ -60,39 +89,39 @@ const CardPokemon = (props) => {
                     <CardActionArea>
 
                         <CardHeader sx={{ color: 'grey' }}
-                            title={props.pokemon.id}
+                            title={pokemon.id}
                         />
                         <CardMedia sx={{ height: 300 }}
                             component="img"
-                            image={props.pokemonImage || img}
+                            image={pokemonImage || img}
                             alt="Foto Pokemon"
                         />
 
-                        <CardContent m='4' sx={{ fontStyle: 'oblique' }}>
+                        <CardContent sx={{ fontStyle: 'oblique' }}> {/* SAQUE m=4 */}
 
                             <Typography gutterBottom variant="h4" component="div" align='center'>
-                                {props.pokemonName.charAt(0).toUpperCase() + props.pokemonName.slice(1)}
+                                {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
 
                             </Typography>
 
                             <Typography variant="h6" color="text.primary" align='center'>
-                                Weight: <Typography variant="body2">{props.pokemonWeight} kg</Typography>
+                                Weight: <Typography variant="body2">{pokemonWeight} kg</Typography>
                             </Typography>
 
                             <Typography variant="h6" color="text.primary" align='center'>
-                                Height: <Typography variant="body2">{props.pokemonHeight} cm</Typography>
+                                Height: <Typography variant="body2">{pokemonHeight} cm</Typography>
                             </Typography>
 
                             <Typography variant="h6" color="text.primary" align='center'>
                                 Base evolution:
                             </Typography>
 
-                            {props.pokemonEvolutionOne.length === 0 ? (
+                            {pokemonEvolutionOne.length === 0 ? (
                                 <Typography color="text.primary" variant="body2" align='center'>Does not have</Typography>
                             ) : (
                                 <Typography variant="h6" color="text.primary" align='center'>
-                                    <Link onClick={click} underline='none' href={`/SeeDetails/${props.pokemonEvolutionOne}`}>
-                                        <Typography color="text.primary" variant="body2">{props.pokemonEvolutionOne} <ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
+                                    <Link onClick={click} underline='none' href={`/SeeDetails/${pokemonEvolutionOne}`}>
+                                        <Typography color="text.primary" variant="body2">{pokemonEvolutionOne} <ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
                                     </Link>
                                 </Typography>
                             )}
@@ -108,7 +137,7 @@ const CardPokemon = (props) => {
                                 <Typography variant="body2" color="text.primary" align='center'>
                                     {totalEvolutionsMedia?.map((media) => (
                                         <Link onClick={click} underline='none' href={`/SeeDetails/${media}`} >
-                                            <Typography color="text.primary" variant="body2" align='center'>{media}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
+                                           {/*  <Typography color="text.primary" variant="body2" align='center'>{media.evolution}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> */}
                                         </Link>
                                     ))}
                                 </Typography>
@@ -125,26 +154,11 @@ const CardPokemon = (props) => {
                                 <Typography variant="body2" color="text.primary" align='center'>
                                     {totalEvolutionsFinal?.map(final => (
                                         <Link onClick={click} underline='none' href={`/SeeDetails/${final}`}>
-                                            <Typography color="text.primary" variant="body2" align='center'>{final}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
+                                           {/*  <Typography color="text.primary" variant="body2" align='center'>{final.evolution}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> */}
                                         </Link>
                                     ))}
                                 </Typography>
                             )}
-
-                            {/* 
-                            {props.pokemonEvolutionOne.length === 0 && totalEvolutionsMedia.length === 0 && totalEvolutionsFinal.length === 0? (
-                            <Typography variant="h6" color="text.primary" align='center'>
-                            DOES NOT HAVE EVOLUTIONSSS
-                            <br />
-                        </Typography>):(
-
-                            
-                            <Typography variant="h6" color="text.primary" align='center'>
-                            DOES NOT HAVE EVOLUTIONS
-                            <br />
-                        </Typography>
-                        )} */}
-
 
                             <Typography variant="h6" color="text.primary" align='center'>
                                 Special-stats:
@@ -163,8 +177,9 @@ const CardPokemon = (props) => {
                             </Typography>
 
                             <Typography variant="body2" color="text.primary" align='center'>
-                                {ability?.map(ability =>
-                                    <Typography variant="body2" color="text.primary" align='center'>{ability.ability.name}</Typography>)}
+                                {ability?.map(ab => (
+                                    <Typography variant="body2" color="text.primary" align='center'>{ab.ability.name}</Typography>)
+                                )}
                                 <br></br>
                             </Typography>
                         </CardContent>

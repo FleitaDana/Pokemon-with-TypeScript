@@ -1,8 +1,10 @@
-import {Grid, Typography, Box } from '@mui/material';
+import {Grid, Typography, LinearProgress, Box } from '@mui/material';
 import React from 'react'
-import img from '../assets/404.png';
 
-const Error = () => {
+
+const img = "../assets/loading.png"
+
+const Loading = () => {
     return (
         <Grid
             container
@@ -19,11 +21,11 @@ const Error = () => {
 
                 <Box display="flex" flexDirection="column"  justifyContent="center" alignItems="center"  height="600px">
                     <Typography variant="h4" color="white" align='center'>
-                        ¿What are you looking for? <img width="200" p="0" src={img} alt='img' sx={{ height: "200px", margin: "auto" }}></img>
+                        Loading data<img width="200" src={img} alt='img' style={{ height: "200px", margin: "auto" }}></img><LinearProgress color="inherit" /> {/* VER ACA IMG */}
                     </Typography>
                 </Box>
             </Grid>
         </Grid>
     );
 }
-export default Error;
+export default Loading;

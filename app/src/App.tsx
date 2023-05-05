@@ -11,10 +11,10 @@ function App() {
     <Router>
       {/* <NavBar /> */}
       <Routes>
-        <Route exact path='/' element={<Main />}></Route>
-        <Route exact path='/Home' element={<Home />}></Route>
-        <Route exact path='/SeeDetails/:id' element={<SeeDetails />}></Route>
-        <Route exact path='*' element={<Error404 />}></Route>
+        <Route path='/' element={<Main />}></Route>
+        <Route path='/Home' element={<Home />}></Route>
+        <Route path='/SeeDetails/:name' element={<SeeDetails />}></Route>
+        <Route path='*' element={<Error404 />}></Route>
       </Routes>
     </Router>
     // </div>

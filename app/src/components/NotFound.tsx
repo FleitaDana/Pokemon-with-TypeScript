@@ -1,10 +1,12 @@
 import {Box, Grid, Typography } from '@mui/material';
 import React from 'react'
-import img from '../assets/notFound.png';
+
+const img = "../assets/notFound.png"
 
 const NotFound = () => {
 
 return(
+
 
 <Grid
             container
@@ -20,7 +22,7 @@ return(
                 sx={{ margin: 2 }}>
 
                 <Box display="flex" flexDirection="column"  justifyContent="center" alignItems="center"  height="600px">
-                <img width="200" p="0" src={img} alt='img' sx={{ height: "200px", margin: "auto" }}></img>
+                <img width="200" src={img} alt='img' style={{ height: "200px", margin: "auto" }}></img>
                     <Typography variant="h4" color="white" align='center'>
                         Pokemon Not found
                     </Typography>
