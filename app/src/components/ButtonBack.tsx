@@ -26,7 +26,7 @@ function ButtonBack() {
 				sx={{ margin: 2 }}>
 				{/* <ThemeProvider theme={theme}> */}
 					{/* <Button m="0" size="small" color="primary" variant="contained" onClick={goBack} sx={{ borderRadius: '10px', border: 2, fontStyle: 'oblique' }}></Button> */}
-				<Button size="small" color='primary' variant="contained" onClick={goBack} sx={{ borderRadius: '10px', border: 2, fontStyle: 'oblique' }} startIcon={<Reply sx={{ borderRadius: '10px', border: 2, fontStyle: 'oblique' }}/>}></Button> {/*  VER ACA */}
+				<Button size="small" color='primary' variant="contained" onClick={goBack} sx={{ borderRadius: '10px', fontStyle: 'oblique', border: '2px' }} startIcon={<Reply sx={{ borderRadius: '10px', fontStyle: 'oblique'}}/>}></Button> {/*  VER ACA */}
 				{/* </ThemeProvider> */}
 			</Grid>
 		</Grid>

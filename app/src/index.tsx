@@ -5,15 +5,23 @@ import App from './App';
 //import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material';
 import theme from './assets/Theme';
+import { ApolloClient , InMemoryCache , ApolloProvider , gql } from '@apollo/client' ;   
+
+const client = new ApolloClient({
+  uri: 'https://beta.pokeapi.co/graphql/v1beta',
+  cache: new InMemoryCache(), //es una instancia de InMemoryCache, que Apollo Client usa para almacenar en caché los resultados de la consulta después de obtenerlos.
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 root.render(
+  <ApolloProvider client={client}>
   <React.StrictMode>
     <ThemeProvider theme={theme}> 
     <App />
     </ThemeProvider> 
   </React.StrictMode>
+  </ApolloProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

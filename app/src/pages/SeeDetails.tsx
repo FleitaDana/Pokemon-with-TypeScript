@@ -8,7 +8,8 @@ import Loading from '../components/Loading';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ButtonBack from '../components/ButtonBack';
 import theme from '../assets/Theme';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 interface Evolutions {
     species: {
       name: string
@@ -57,7 +58,6 @@ const SeeDetails = () => {
                 setPokemonStats(res.data.stats);
                 setPokemonSpecies(res.data.species);
 
-                //if (res.data.evolution_chain?.url === null) { // Verifica si la URL no es null
 
                 let speciesId = res.data.species.url.split("/")[6];
                 /* console.log(speciesId) */
@@ -163,10 +163,10 @@ const SeeDetails = () => {
                         {dataEvolution == null ?
                         (
                         <Box display="flex" flexDirection="row" justifyContent="space-between">
-                       {/*  <Link underline='none' href={`/SeeDetails/${pokemon.id === 1 ? 1 : pokemon.id - 1}`}><button><KeyboardArrowLeftIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                       <Link underline='none' href={`/SeeDetails/${pokemon.id === 1 ? 1 : pokemon.id - 1}`}><button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
                         </Link>
-                        <Link underline='none' href={`/SeeDetails/${pokemon.id + 1}`}><button><KeyboardArrowRightIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
-                        </Link> */}
+                        <Link underline='none' href={`/SeeDetails/${pokemon.id + 1}`}><button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                        </Link> 
                         </Box>
                         )
                          : (

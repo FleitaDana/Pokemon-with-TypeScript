@@ -10,6 +10,7 @@ const Error = () => {
             justifyContent="center"
             alignItems="center"
             p="20"
+            height={'100vh'}
         >
             <Grid item
                 justifyContent="center"

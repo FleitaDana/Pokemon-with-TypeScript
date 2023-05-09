@@ -4,12 +4,13 @@ import Home from './pages/Home';
 import SeeDetails from './pages/SeeDetails';
 import Main from './pages/Main';
 import Error404 from './pages/Error404';
+import { useQuery, gql } from '@apollo/client';
+
 
 function App() {
   return (
     // <div className='App-header'>
     <Router>
-      {/* <NavBar /> */}
       <Routes>
         <Route path='/' element={<Main />}></Route>
         <Route path='/Home' element={<Home />}></Route>
