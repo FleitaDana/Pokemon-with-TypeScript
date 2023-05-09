@@ -1,6 +1,5 @@
 import baseURL from "./baseUrl";
 
-
 const getPokemones = (page: number) => baseURL.get(`/pokemon/?offset=${(page-1)*20}&limit=20`)
 const getPokemonesById = (id: number) => baseURL.get(`/pokemon/${id}`)
 const getPokemonesByName = (name: string | undefined) => baseURL.get(`/pokemon/${name}`)

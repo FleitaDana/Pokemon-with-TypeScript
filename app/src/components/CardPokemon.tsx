@@ -4,26 +4,24 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 //import img from '../assets/notFound.png';
 
 interface Props {
-    pokemonStats: Array<Stats>,
-    pokemonAbilities: Array<Ability>,
-    evolutionsMedia: Array<String>,
-    evolutionsFinal: Array<String>,
     pokemon: Pokemon,
-    pokemonName: string,
-    pokemonImage: string,
-    pokemonWeight: number,
-    pokemonHeight: number,
-    pokemonEvolutionOne: string,
-    pokemonSpecies: any,
-}
-
-interface Stats {
-    stat: { name: string },
-    base_stat: number,
+    //pokemonStats: Array<Stats>,
+    //pokemonAbilities: Array<Ability>,
 }
 
 interface Pokemon {
     id: number,
+    name: string,
+    height: number,
+    weight: number,
+    abilities: Array<Ability>,
+    stats: Array<Stats>,
+}
+
+interface Stats {
+    dato: { name: string },
+    name: string,
+    base_stat: number,
 }
 
 interface Ability {
@@ -40,7 +38,7 @@ interface TotalEvolutionsFinal {
 
 const img = "../assets/notFound.png"
 
-const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutionsFinal, pokemon, pokemonName, pokemonImage, pokemonWeight, pokemonHeight, pokemonEvolutionOne} : Props) => {
+const CardPokemon = ({ pokemon } : Props) => {
 
     const [stats, setStats] = useState<Array<Stats>>([]);
     const [ability, setAbility] = useState<Array<Ability>>([]);
@@ -52,25 +50,23 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
     function click() {
         localStorage.setItem('evoMedia', String(evo))
     }
+    
+ console.log(pokemon);
+    // useEffect(() => {
+    //     setStats(pokemonStats)
+    // }, [pokemonStats])
 
-    useEffect(() => {
-        setStats(pokemonStats)
-    }, [pokemonStats])
+    // useEffect(() => {
+    //     setAbility(pokemonAbilities)
+    // }, [pokemonAbilities])
 
-    useEffect(() => {
-        setAbility(pokemonAbilities)
-    }, [pokemonAbilities])
+    // useEffect(() => {
+    //     setTotalEvolutionsMedia(evolutionsMedia);
+    // }, [evolutionsMedia])
 
-    useEffect(() => {
-        setTotalEvolutionsMedia(evolutionsMedia);
-        //console.log(props.totalEvolutionsMedia)
-
-    }, [evolutionsMedia])
-
-    useEffect(() => {
-        setTotalEvolutionsFinal(evolutionsFinal);
-        //console.log("totalEvolutionsFinal de la card", props.totalEvolutionsFinal)
-    }, [evolutionsFinal])
+    // useEffect(() => {
+    //     setTotalEvolutionsFinal(evolutionsFinal);
+    // }, [evolutionsFinal])
 
     return (
         <Grid
@@ -93,30 +89,30 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                         />
                         <CardMedia sx={{ height: 300 }}
                             component="img"
-                            image={pokemonImage || img}
+                            image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png` || img}
                             alt="Foto Pokemon"
                         />
 
                         <CardContent sx={{ fontStyle: 'oblique' }}> {/* SAQUE m=4 */}
 
                             <Typography gutterBottom variant="h4" component="div" align='center'>
-                                {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
+                                {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
 
                             </Typography>
 
                             <Typography variant="h6" color="text.primary" align='center'>
-                                Weight: <Typography variant="body2">{pokemonWeight} kg</Typography>
+                                Weight: <Typography variant="body2">{pokemon.weight} kg</Typography>
                             </Typography>
 
                             <Typography variant="h6" color="text.primary" align='center'>
-                                Height: <Typography variant="body2">{pokemonHeight} cm</Typography>
+                                Height: <Typography variant="body2">{pokemon.height} cm</Typography>
                             </Typography>
 
-                            <Typography variant="h6" color="text.primary" align='center'>
+                            {/*<Typography variant="h6" color="text.primary" align='center'>
                                 Base evolution:
                             </Typography>
 
-                            {pokemonEvolutionOne.length === 0 ? (
+                             {pokemonEvolutionOne.length === 0 ? (
                                 <Typography color="text.primary" variant="body2" align='center'>Does not have</Typography>
                             ) : (
                                 <Typography variant="h6" color="text.primary" align='center'>
@@ -158,7 +154,7 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                                         </Link>
                                     ))}
                                 </Typography>
-                            )}
+                            )} */}
 
                             <Typography variant="h6" color="text.primary" align='center'>
                                 Special-stats:
@@ -166,8 +162,8 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                             </Typography>
 
                             <Typography variant="body2" color="text.primary" align='center'>
-                                {stats?.map(st => (
-                                    <Typography variant="body2" color="text.primary" align='center'>{st.stat.name}: {st.base_stat}</Typography>)
+                                {pokemon.stats?.map(st => (
+                                    <Typography variant="body2" color="text.primary" align='center'>{st.dato.name}: {st.base_stat}</Typography>)
                                 )}
                             </Typography>
 
@@ -177,7 +173,7 @@ const CardPokemon = ({ pokemonStats, pokemonAbilities, evolutionsMedia, evolutio
                             </Typography>
 
                             <Typography variant="body2" color="text.primary" align='center'>
-                                {ability?.map(ab => (
+                                {pokemon.abilities?.map(ab => (
                                     <Typography variant="body2" color="text.primary" align='center'>{ab.ability.name}</Typography>)
                                 )}
                                 <br></br>

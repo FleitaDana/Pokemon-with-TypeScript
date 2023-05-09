@@ -46,7 +46,7 @@ const GridPokemon = ({listPokemon}: Props) => {
                         <Box display="flex" justifyContent="center" alignItems="center">
                             <img
                                 width="150px"
-                                src={pokemon.images}
+                                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`}
                                 alt='img'
                                 style={{ height: "200px", margin: "auto" }}
                             />

@@ -6,6 +6,7 @@ import GridPokemon from '../components/GridPokemon';
 import Loading from '../components/Loading';
 import { Link as LinkPagination } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
+import Error from '../components/Error';
 
 interface Pokemon {
     name: string;
@@ -42,13 +43,14 @@ const Home = () => {
 
 
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :</p>;
+    if (loading) return <Loading></Loading>;
+    if (error) return <Error></Error>;
 
 
 
 
-    const countt = Math.ceil(((data.cantidad.aggregate.count / 20) + (data.cantidad.aggregate.count % 20)));
+    //const countt = Math.ceil(((data.cantidad.aggregate.count / 20) + (data.cantidad.aggregate.count % 20)));
+    const countt =  Math.ceil(data.cantidad.aggregate.count / 20);
     console.log(data.cantidad.aggregate.count);
 
 

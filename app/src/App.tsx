@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Main />}></Route>
         <Route path='/Home' element={<Home />}></Route>
-        <Route path='/SeeDetails/:name' element={<SeeDetails />}></Route>
+        <Route path='/SeeDetails/:name' element={<SeeDetails/>}></Route>
         <Route path='*' element={<Error404 />}></Route>
       </Routes>
     </Router>
