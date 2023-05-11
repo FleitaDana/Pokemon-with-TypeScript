@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Pagination, PaginationItem } from '@mui/material';
+import { Box, Grid, Pagination, PaginationItem, TextField } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { getPokemones, getPokemonesByName } from '../api/apis';
 import GridPokemon from '../components/GridPokemon';
 import Loading from '../components/Loading';
 import { Link as LinkPagination } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Error from '../components/Error';
 
 interface Pokemon {
@@ -29,6 +29,15 @@ query GETPOKEMONS($offset: Int!){
   }
 }`;
 
+const GET_POKEMON_BY_NAME = gql`
+query GetPokemonByName($name: String!) {
+    poke: pokemon_v2_pokemon(where: {name: {_eq: $name}}) {
+        name
+      }
+}`;
+
+
+
 const Home = () => {
 
 
@@ -38,6 +47,12 @@ const Home = () => {
     const page = parseInt(query.get('page') || '1', 10);
     const offset = (page - 1) * 20;
 
+    const [lookForPokemon, setLookForPokemon] = useState("");
+
+    const [
+        fetchPokemon,
+        { data: pokemonData, error: pokemonError },
+    ] = useLazyQuery(GET_POKEMON_BY_NAME);
 
     const { loading, error, data } = useQuery(GET_POKEMONS, { variables: { page, offset } });
 
@@ -50,7 +65,7 @@ const Home = () => {
 
 
     //const countt = Math.ceil(((data.cantidad.aggregate.count / 20) + (data.cantidad.aggregate.count % 20)));
-    const countt =  Math.ceil(data.cantidad.aggregate.count / 20);
+    const countt = Math.ceil(data.cantidad.aggregate.count / 20);
     console.log(data.cantidad.aggregate.count);
 
 
@@ -58,7 +73,7 @@ const Home = () => {
         <div className='background-table'>
             <Grid
                 container
-                flexDirection="column"
+                flexDirection="row"
                 justifyContent="center"
                 alignItems="center"
                 p="20"
@@ -66,7 +81,7 @@ const Home = () => {
                 paddingTop={'20px'}
                 paddingBottom={'20px'}
             >
-                <Pagination
+                {/* <Pagination
                     page={page}
                     count={countt}
                     renderItem={(item) => (
@@ -76,19 +91,98 @@ const Home = () => {
                             {...item}
                         />
                     )}
-                />
+                /> */}
+
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    {/* <TextField id="standard-basic" label="buscar Pokemon" variant="standard" /> */}
+
+                    {/* <TextField
+                        id="standard-basic"
+                        label="buscar Pokemon"
+                        variant="standard"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            setLookForPokemon(event.target.value);
+                        }}
+                    />
+                    <button onClick={() => {
+                                fetchPokemon({
+                                    variables: {
+                                        name: lookForPokemon,
+                                    },
+                                });
+                            }}>Look for pokemon</button> */}
+
+                </Box>
+
 
                 <Grid item
                     justifyContent="center"
                     alignItems="center"
                     xs={12} md={12} lg={12}
                 >
-                    {data.poke.length > 0 ? (
+
+                    <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="pokemonnnn"
+                                onChange={(event) => {
+                                    setLookForPokemon(event.target.value);
+                                }}
+                            />
+                            <button onClick={() => {
+                                fetchPokemon({
+                                    variables: {
+                                        name: lookForPokemon,
+                                    },
+                                });
+                            }}>Look for pokemon</button>
+                        </div>
+                        <div>
+                            {pokemonData && (
+                                <div>
+                                    <h1> pokemonName: {pokemonData.poke[0].name}</h1>
+                                </div>
+                            )}
+                        </div>
+                    </Box>
+
+                    {/* {data.poke.length > 0 ? (
                         <GridPokemon
                             listPokemon={data.poke}
                         />
                     ) : (
                         <div><Loading></Loading></div>
+                    )} */}
+
+                    {pokemonData && pokemonData.poke.length > 0 ? (
+                        <GridPokemon listPokemon={pokemonData.poke} />
+                    ) : (
+
+                        <>
+
+                            <Pagination
+                                page={page}
+                                count={countt}
+                                renderItem={(item) => (
+                                    <PaginationItem
+                                        component={LinkPagination}
+                                        to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
+                                        {...item}
+                                    />
+                                )}
+                            />
+
+                            <GridPokemon listPokemon={data.poke} />
+
+                        </>
                     )}
 
 

@@ -1,4 +1,4 @@
-import { Box, Grid, Link } from '@mui/material';
+import { Box, Grid, Link} from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import CardPokemon from '../components/CardPokemon';
@@ -19,9 +19,10 @@ interface Evolutions {
     evolves_to: any
 }
 
-  const GET_POKEMONS = gql`
+
+const GET_POKEMONS = gql`
   query GETPOKEMONS ($name: String!){
-    poke: pokemon_v2_pokemon (where: {name: {_eq: $name}}) {
+    poke: pokemon_v2_pokemon(where: {name: {_eq: $name}}) {
       id
       name
       height
@@ -32,23 +33,32 @@ interface Evolutions {
         }
       }
       stats: pokemon_v2_pokemonstats {
-            id
-            dato: pokemon_v2_stat {
-              name
-            }
-            base_stat
+        id
+        dato: pokemon_v2_stat {
+          name
+        }
+        base_stat
+      }
+      specy: pokemon_v2_pokemonspecy {
+        chain: pokemon_v2_evolutionchain {
+          species: pokemon_v2_pokemonspecies {
+            name
           }
+        }
+      }
     }
   }`;
 
 
 const SeeDetails = () => {
 
-    const {name} = useParams();
+    const { name } = useParams();
 
-    const { loading, error, data } = useQuery(GET_POKEMONS,{variables: { name }});
+    const { loading, error, data } = useQuery(GET_POKEMONS, { variables: { name } });
 
-    
+    useEffect(() => {
+        getData();
+    }, [name])
 
     const [dataEvolution, setDataEvolution] = useState<String | null>();
 
@@ -78,14 +88,16 @@ const SeeDetails = () => {
                     xs={12} md={12} lg={12}
                     sx={{ margin: 2 }}>
 
+                    
+
                     <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
 
                         {dataEvolution == null ?
                             (
                                 <Box display="flex" flexDirection="row" justifyContent="space-between">
-                                    <Link underline='none' href={`/SeeDetails/${data.poke.id === 1 ? 1 : data.poke.id - 1}`}><button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
                                     </Link>
-                                    <Link underline='none' href={`/SeeDetails/${data.poke.id + 1}`}><button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
                                     </Link>
                                 </Box>
                             )
@@ -100,6 +112,7 @@ const SeeDetails = () => {
 
                         <CardPokemon
                             pokemon={data.poke[0]}
+                            pokemonEvolutions={data.poke[0].specy.chain.species.map((item: any) => item.name)}
                         //pokemonAbilities={data.poke[0].abilities}
                         //pokemonStats={data.stats}
                         />

@@ -7,6 +7,7 @@ interface Props {
     pokemon: Pokemon,
     //pokemonStats: Array<Stats>,
     //pokemonAbilities: Array<Ability>,
+    pokemonEvolutions: Array<Evolution>,
 }
 
 interface Pokemon {
@@ -20,7 +21,6 @@ interface Pokemon {
 
 interface Stats {
     dato: { name: string },
-    name: string,
     base_stat: number,
 }
 
@@ -28,17 +28,22 @@ interface Ability {
     ability: { name: string },
 }
 
-interface TotalEvolutionsMedia {
-    evolution: string,
+interface Evolution {
+    name: string,
 }
 
-interface TotalEvolutionsFinal {
-    evolution: string,
-}
+
+// interface TotalEvolutionsMedia {
+//     evolution: string,
+// }
+
+// interface TotalEvolutionsFinal {
+//     evolution: string,
+// }
 
 const img = "../assets/notFound.png"
 
-const CardPokemon = ({ pokemon } : Props) => {
+const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
 
     const [stats, setStats] = useState<Array<Stats>>([]);
     const [ability, setAbility] = useState<Array<Ability>>([]);
@@ -50,8 +55,8 @@ const CardPokemon = ({ pokemon } : Props) => {
     function click() {
         localStorage.setItem('evoMedia', String(evo))
     }
-    
- console.log(pokemon);
+
+    console.log(pokemonEvolutions);
     // useEffect(() => {
     //     setStats(pokemonStats)
     // }, [pokemonStats])
@@ -108,53 +113,25 @@ const CardPokemon = ({ pokemon } : Props) => {
                                 Height: <Typography variant="body2">{pokemon.height} cm</Typography>
                             </Typography>
 
-                            {/*<Typography variant="h6" color="text.primary" align='center'>
-                                Base evolution:
-                            </Typography>
-
-                             {pokemonEvolutionOne.length === 0 ? (
-                                <Typography color="text.primary" variant="body2" align='center'>Does not have</Typography>
+                            {pokemonEvolutions.length === 0 ? (
+                                <Typography color="text.primary" variant="body2" align='center'>This pokemon has no evolutions</Typography>
                             ) : (
-                                <Typography variant="h6" color="text.primary" align='center'>
-                                    <Link onClick={click} underline='none' href={`/SeeDetails/${pokemonEvolutionOne}`}>
-                                        <Typography color="text.primary" variant="body2">{pokemonEvolutionOne} <ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
-                                    </Link>
-                                </Typography>
+                                <>
+                                    <Typography variant="h6" color="text.primary" align='center'>
+                                        Evolutionary chain:
+                                        <br />
+                                    </Typography>
+
+                                    <Typography variant="body2" color="text.primary" align='center'>
+                                        {pokemonEvolutions?.map((evolution: any) => (
+                                            <Link onClick={click} underline='none' href={`/SeeDetails/${evolution}`} >
+                                                <Typography color="text.primary" variant="body2" align='center'>{evolution}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography>
+                                            </Link>
+                                        ))}
+                                    </Typography>
+                                </>
                             )}
 
-                            <Typography variant="h6" color="text.primary" align='center'>
-                                First evolution:
-                                <br />
-                            </Typography>
-
-                            {totalEvolutionsMedia.length === 0 ? (
-                                <Typography color="text.primary" variant="body2" align='center'>Does not have</Typography>
-                            ) : (
-                                <Typography variant="body2" color="text.primary" align='center'>
-                                    {totalEvolutionsMedia?.map((media) => (
-                                        <Link onClick={click} underline='none' href={`/SeeDetails/${media}`} >
-                                          <Typography color="text.primary" variant="body2" align='center'>{media}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> 
-                                        </Link>
-                                    ))}
-                                </Typography>
-                            )}
-
-                            <Typography variant="h6" color="text.primary" align='center'>
-                                Second evolution:
-                                <br />
-                            </Typography>
-
-                            {totalEvolutionsFinal.length === 0 ? (
-                                <Typography color="text.primary" variant="body2" align='center'>Does not have</Typography>
-                            ) : (
-                                <Typography variant="body2" color="text.primary" align='center'>
-                                    {totalEvolutionsFinal?.map(final => (
-                                        <Link onClick={click} underline='none' href={`/SeeDetails/${final}`}>
-                                             <Typography color="text.primary" variant="body2" align='center'>{final}<ArrowOutwardIcon sx={{ fontSize: 'small' }} color="secondary" /></Typography> 
-                                        </Link>
-                                    ))}
-                                </Typography>
-                            )} */}
 
                             <Typography variant="h6" color="text.primary" align='center'>
                                 Special-stats:
