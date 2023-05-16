@@ -3,6 +3,7 @@ import { Button, Grid, ThemeProvider } from '@mui/material';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import {Reply} from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function ButtonBack() {
 	const navigate = useNavigate();
@@ -24,10 +25,7 @@ function ButtonBack() {
 				alignItems="center"
 				xs={12} md={12} lg={12}
 				sx={{ margin: 2 }}>
-				{/* <ThemeProvider theme={theme}> */}
-					{/* <Button m="0" size="small" color="primary" variant="contained" onClick={goBack} sx={{ borderRadius: '10px', border: 2, fontStyle: 'oblique' }}></Button> */}
-				<Button size="small" color='primary' variant="contained" onClick={goBack} sx={{ borderRadius: '10px', fontStyle: 'oblique', border: '2px' }} startIcon={<Reply sx={{ borderRadius: '10px', fontStyle: 'oblique'}}/>}></Button> {/*  VER ACA */}
-				{/* </ThemeProvider> */}
+				<Button size="small" color='primary' variant="contained" onClick={goBack} sx={{ borderRadius: '5px', fontStyle: 'oblique', border: '2px' }} startIcon={<ArrowBackIcon sx={{ borderRadius: '10px', fontStyle: 'oblique'}}/>}></Button> 
 			</Grid>
 		</Grid>
 	</>;

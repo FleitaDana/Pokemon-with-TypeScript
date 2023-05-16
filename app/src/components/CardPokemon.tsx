@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography, Grid, CardHeader, Link } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-//import img from '../assets/notFound.png';
+import notPokemonImg from '../assets/notPokemon';
 
 interface Props {
     pokemon: Pokemon,
@@ -32,7 +32,6 @@ interface Evolution {
     name: string,
 }
 
-
 // interface TotalEvolutionsMedia {
 //     evolution: string,
 // }
@@ -45,10 +44,10 @@ const img = "../assets/notFound.png"
 
 const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
 
-    const [stats, setStats] = useState<Array<Stats>>([]);
-    const [ability, setAbility] = useState<Array<Ability>>([]);
-    const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
-    const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
+    // const [stats, setStats] = useState<Array<Stats>>([]);
+    // const [ability, setAbility] = useState<Array<Ability>>([]);
+    // const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
+    // const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
 
     const evo = true;
 
@@ -56,22 +55,7 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
         localStorage.setItem('evoMedia', String(evo))
     }
 
-    console.log(pokemonEvolutions);
-    // useEffect(() => {
-    //     setStats(pokemonStats)
-    // }, [pokemonStats])
-
-    // useEffect(() => {
-    //     setAbility(pokemonAbilities)
-    // }, [pokemonAbilities])
-
-    // useEffect(() => {
-    //     setTotalEvolutionsMedia(evolutionsMedia);
-    // }, [evolutionsMedia])
-
-    // useEffect(() => {
-    //     setTotalEvolutionsFinal(evolutionsFinal);
-    // }, [evolutionsFinal])
+    //console.log(pokemonEvolutions);
 
     return (
         <Grid
@@ -86,7 +70,7 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
                 xs={12} md={12} lg={12}
                 sx={{ margin: 3 }}>
 
-                <Card sx={{ transition: "0.2s", "&:hover": { transform: "scale(1.05)" }, display: 'flex', alignContent: 'center', justifyContent: 'center', boxShadow: 10, border: 2 }}>
+                <Card sx={{ transition: "0.2s", "&:hover": { transform: "scale(1.05)" }, display: 'flex', alignContent: 'center', justifyContent: 'center', boxShadow: 10, border: 2, widht:'100px' }}>
                     <CardActionArea>
 
                         <CardHeader sx={{ color: 'grey' }}
@@ -94,7 +78,7 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
                         />
                         <CardMedia sx={{ height: 300 }}
                             component="img"
-                            image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png` || img}
+                            image={pokemon.id ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png` : notPokemonImg}
                             alt="Foto Pokemon"
                         />
 

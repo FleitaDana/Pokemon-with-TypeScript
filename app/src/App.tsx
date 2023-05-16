@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import SeeDetails from './pages/SeeDetails';
 import Main from './pages/Main';
 import Error404 from './pages/Error404';
-import { useQuery, gql } from '@apollo/client';
 
 
 function App() {

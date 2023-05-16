@@ -2,7 +2,6 @@ import React from 'react'
 import { Grid } from '@mui/material';
 import Error from '../components/Error';
 
-
 const Error404 = () => {
 
     return (
@@ -19,8 +18,7 @@ const Error404 = () => {
                     alignItems="center"
                     xs={12} md={12} lg={12}
                     sx={{ margin: 2 }}>
-                    <Error
-                    />
+                    <Error/>
                 </Grid>
             </Grid>
         </div>

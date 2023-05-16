@@ -1,8 +1,6 @@
 import {Grid, Typography, LinearProgress, Box } from '@mui/material';
 import React from 'react'
-
-
-const img = "../assets/loading.png"
+import loadingImg from '../assets/loading';
 
 const Loading = () => {
     return (
@@ -20,8 +18,8 @@ const Loading = () => {
                 sx={{ margin: 2 }}>
 
                 <Box display="flex" flexDirection="column"  justifyContent="center" alignItems="center"  height="600px">
-                    <Typography variant="h4" color="white" align='center'>
-                        Loading data<img width="200" src={img} alt='img' style={{ height: "200px", margin: "auto" }}></img><LinearProgress color="inherit" /> {/* VER ACA IMG */}
+                    <Typography variant="h4" color="primary" align='center'  sx={{fontStyle: 'oblique'}}>
+                        Loading data<img width="200" src={loadingImg} alt='img' style={{ height: "300px", width: "300px", margin: "auto" }}></img><LinearProgress color="inherit" /> {/* VER ACA IMG */}
                     </Typography>
                 </Box>
             </Grid>

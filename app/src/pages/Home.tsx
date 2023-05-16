@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Grid, Pagination, PaginationItem, TextField } from '@mui/material';
+import { Box, Button, Grid, Pagination, PaginationItem, TextField, Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { getPokemones, getPokemonesByName } from '../api/apis';
 import GridPokemon from '../components/GridPokemon';
 import Loading from '../components/Loading';
 import { Link as LinkPagination } from 'react-router-dom';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Error from '../components/Error';
+
+const color = '#ffffff';
 
 interface Pokemon {
     name: string;
@@ -29,18 +30,18 @@ query GETPOKEMONS($offset: Int!){
   }
 }`;
 
+
+
 const GET_POKEMON_BY_NAME = gql`
-query GetPokemonByName($name: String!) {
-    poke: pokemon_v2_pokemon(where: {name: {_eq: $name}}) {
-        name
-      }
-}`;
-
-
+  query GetPokemonByName($name: String!) {
+    poke: pokemon_v2_pokemon(where: {name: {_ilike: $name}}) {
+      name
+      id
+    }
+  }
+`;
 
 const Home = () => {
-
-
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
@@ -56,18 +57,11 @@ const Home = () => {
 
     const { loading, error, data } = useQuery(GET_POKEMONS, { variables: { page, offset } });
 
-
-
     if (loading) return <Loading></Loading>;
     if (error) return <Error></Error>;
 
-
-
-
-    //const countt = Math.ceil(((data.cantidad.aggregate.count / 20) + (data.cantidad.aggregate.count % 20)));
     const countt = Math.ceil(data.cantidad.aggregate.count / 20);
-    console.log(data.cantidad.aggregate.count);
-
+    //console.log(data.cantidad.aggregate.count);
 
     return (
         <div className='background-table'>
@@ -75,133 +69,98 @@ const Home = () => {
                 container
                 flexDirection="row"
                 justifyContent="center"
-                alignItems="center"
                 p="20"
                 height="100%"
                 paddingTop={'20px'}
                 paddingBottom={'20px'}
             >
-                {/* <Pagination
-                    page={page}
-                    count={countt}
-                    renderItem={(item) => (
-                        <PaginationItem
-                            component={LinkPagination}
-                            to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                            {...item}
-                        />
-                    )}
-                /> */}
-
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    {/* <TextField id="standard-basic" label="buscar Pokemon" variant="standard" /> */}
-
-                    {/* <TextField
-                        id="standard-basic"
-                        label="buscar Pokemon"
-                        variant="standard"
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setLookForPokemon(event.target.value);
-                        }}
-                    />
-                    <button onClick={() => {
-                                fetchPokemon({
-                                    variables: {
-                                        name: lookForPokemon,
-                                    },
-                                });
-                            }}>Look for pokemon</button> */}
-
-                </Box>
-
-
                 <Grid item
                     justifyContent="center"
-                    alignItems="center"
                     xs={12} md={12} lg={12}
                 >
-
-                    <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
+                    <Box display="flex" flexDirection="column" justifyContent="flex-end" alignItems="center" padding={0} >
                         <div>
-                            <input
-                                type="text"
-                                placeholder="pokemonnnn"
+                            {/* <TextField
+                                id="standard-basic"
+                                label="Look for pokemon"
+                                variant="standard"
+                                placeholder="name pokemon"
+                                value={lookForPokemon}
                                 onChange={(event) => {
                                     setLookForPokemon(event.target.value);
                                 }}
+                                
+                            /> */}
+                            <TextField
+                                id="standard-basic"
+                                label="Look for pokemon"
+                                variant="standard"
+                                placeholder="name pokemon"
+                                value={lookForPokemon}
+                                onChange={(event) => {
+                                    setLookForPokemon(event.target.value);
+                                    fetchPokemon({
+                                        variables: {
+                                            name: `%${event.target.value}%`,
+                                        },
+                                    });
+                                }}
                             />
-                            <button onClick={() => {
+                            {/* <Button sx={{ marginTop: '15px' }} onClick={() => {
                                 fetchPokemon({
                                     variables: {
                                         name: lookForPokemon,
                                     },
                                 });
-                            }}>Look for pokemon</button>
+                            }}><SavedSearchIcon sx={{
+                                fontSize: 'large', width: '25px', height: '25px', color: '#212121', "&:hover": {
+                                    backgroundColor: 'none',
+                                }
+                            }} /></Button> */}
                         </div>
-                        <div>
-                            {pokemonData && (
-                                <div>
-                                    <h1> pokemonName: {pokemonData.poke[0].name}</h1>
-                                </div>
-                            )}
-                        </div>
-                    </Box>
 
-                    {/* {data.poke.length > 0 ? (
-                        <GridPokemon
-                            listPokemon={data.poke}
-                        />
-                    ) : (
-                        <div><Loading></Loading></div>
-                    )} */}
+                        {pokemonData && pokemonData.poke.length == 0 ? (
+                            <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                                There is no pokemon!
+                            </Typography>
+                        ) :
+                            (" ")}
+                    </Box>
 
                     {pokemonData && pokemonData.poke.length > 0 ? (
                         <GridPokemon listPokemon={pokemonData.poke} />
                     ) : (
-
                         <>
-
-                            <Pagination
-                                page={page}
-                                count={countt}
-                                renderItem={(item) => (
-                                    <PaginationItem
-                                        component={LinkPagination}
-                                        to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
-                                        {...item}
-                                    />
-                                )}
-                            />
-
+                            <Box display="flex" flexDirection="column" justifyContent="left" alignItems="center" padding={0} >
+                                <Pagination
+                                    variant="outlined"
+                                    shape="rounded"
+                                    page={page}
+                                    count={countt}
+                                    renderItem={(item) => (
+                                        <PaginationItem sx={{
+                                            backgroundColor: item.selected ? '{color}' : '#00897b', "&:hover": {
+                                                backgroundColor: '#b2dfdb',
+                                            }, "&:select": {
+                                                backgroundColor: '#b2dfdb',
+                                            }
+                                        }}
+                                            component={LinkPagination}
+                                            to={`${item.page === 1 ? '' : `?page=${item.page}`}`}
+                                            {...item}
+                                        />
+                                    )}
+                                />
+                            </Box>
                             <GridPokemon listPokemon={data.poke} />
-
                         </>
                     )}
-
-
-                    {/*  {data.poke.length > 0 && data.images.length > 0 ? (
-                        <GridPokemon
-                            listPokemon={data.poke}
-                            pokemonImage={data.images}
-                        />
-                    ) : (
-                        <div><Loading></Loading></div>
-                    )} */}
                 </Grid>
             </Grid>
         </div>
     );
 }
 export default Home;
-
-
 
 // const Home = () => {
 

@@ -11,7 +11,7 @@
 }
 
 .background-card{
-  background-image: url("assets/pokebolas.jpg");
+  background-image: url("assets/pokebolas2.png");
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
@@ -22,3 +22,4 @@
   background-color: darkslategray;
   height: 100%;
 }
+

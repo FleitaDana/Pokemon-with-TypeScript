@@ -27,9 +27,7 @@ const GridPokemon = ({listPokemon}: Props) => {
             height={'100vh'}
         >
             {listPokemon.map((pokemon, index) => {
-                /* console.log(index)
-                const imagen = pokemonImage[index];
-                console.log(pokemonImage[index]) */
+
                 return (
                     <Grid
                         item
@@ -39,10 +37,11 @@ const GridPokemon = ({listPokemon}: Props) => {
                         xs={10}
                         md={5}
                         lg={3}
-                        sx={{ backgroundColor: '#FFFFFF', boxShadow: 10, borderRadius: 1, paddingTop: 2}}
+                        sx={{ backgroundColor: '#FFFFFF', boxShadow: 10, borderRadius: 1, paddingTop: 2, transition: "0.2s", "&:hover": { transform: "scale(1.05)" }}}
                         margin={2}    
                     >
-                        <Typography align='center' sx={{ boxShadow: 3}}> {pokemon.name}</Typography>
+                        <Link underline="none" color="#212121" href={`/SeeDetails/${pokemon.name}`} sx={{margin: "auto" }}>
+                        <Typography align='center' sx={{ fontSize: 20, boxShadow: 3, fontStyle: 'oblique'}}> {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</Typography>
                         <Box display="flex" justifyContent="center" alignItems="center">
                             <img
                                 width="150px"
@@ -52,8 +51,8 @@ const GridPokemon = ({listPokemon}: Props) => {
                             />
                         </Box>
                         <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginTop: '2px'}}>
-                        <Link underline="none" color="secondary" href={`/SeeDetails/${pokemon.name}`} sx={{margin: "auto" }}>See details</Link>
                         </Box>
+                        </Link>
                     </Grid>
                 );
             })}

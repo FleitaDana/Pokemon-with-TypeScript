@@ -1,8 +1,9 @@
 import {Grid, Typography, Box } from '@mui/material';
 import React from 'react'
+import errorImg from '../assets/error';
 
 const Error = () => {
-    const img ="../assets/404.png" /* VER ACA */
+   
     return (
         <Grid
             container
@@ -19,8 +20,8 @@ const Error = () => {
                 sx={{ margin: 2 }}>
 
                 <Box display="flex" flexDirection="column"  justifyContent="center" alignItems="center"  height="600px">
-                    <Typography variant="h4" color="white" align='center'>
-                        ¿What are you looking for? <img width="200" src={img} alt='img' style={{ height: "200px", margin: "auto" }}/>
+                    <Typography variant="h4" color="primary" align='center' sx={{fontStyle: 'oblique'}}>
+                        ¿What are you looking for? <img width="200" src={errorImg} alt='img' style={{ height: "200px", margin: "auto" }}/>
                     </Typography>
                 </Box>
             </Grid>

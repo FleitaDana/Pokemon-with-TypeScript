@@ -1,4 +1,4 @@
-import { Box, Grid, Link} from '@mui/material';
+import { Box, Button, Grid, Link} from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import CardPokemon from '../components/CardPokemon';
@@ -11,14 +11,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useQuery, gql } from '@apollo/client';
 
-
 interface Evolutions {
     species: {
         name: string
     }
     evolves_to: any
 }
-
 
 const GET_POKEMONS = gql`
   query GETPOKEMONS ($name: String!){
@@ -62,7 +60,7 @@ const SeeDetails = () => {
 
     const [dataEvolution, setDataEvolution] = useState<String | null>();
 
-    if (error) return <p>error</p>;
+    //if (error) return <p>error</p>;
 
     const getData = () => {
         localStorage.getItem('evoMedia');
@@ -88,16 +86,14 @@ const SeeDetails = () => {
                     xs={12} md={12} lg={12}
                     sx={{ margin: 2 }}>
 
-                    
-
                     <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
 
                         {dataEvolution == null ?
                             (
                                 <Box display="flex" flexDirection="row" justifyContent="space-between">
-                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><Button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></Button>
                                     </Link>
-                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><Button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></Button>
                                     </Link>
                                 </Box>
                             )
@@ -113,14 +109,12 @@ const SeeDetails = () => {
                         <CardPokemon
                             pokemon={data.poke[0]}
                             pokemonEvolutions={data.poke[0].specy.chain.species.map((item: any) => item.name)}
-                        //pokemonAbilities={data.poke[0].abilities}
-                        //pokemonStats={data.stats}
                         />
                     </Box>
 
                     {dataEvolution == null ?
-                        <Box display="flex" justifyContent="right" alignItems="right" > {/* SAQUE direction="column" */}
-                            <Link underline='none' href='/home'><button><HomeRoundedIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
+                        <Box display="flex" justifyContent="right" alignItems="right" > 
+                            <Link underline='none' href='/home'><button><HomeRoundedIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
                             </Link>
                         </Box>
                         : (
@@ -133,179 +127,6 @@ const SeeDetails = () => {
     else {
         return (<NotFound />);
     }
-
-
-
-    console.log(data.poke[0]);
-
-
-    //     const {name} = useParams();
-
-    //     const [pokemon, setPokemon] = useState<any>('');
-    //     const [pokemonImage, setPokemonImage] = useState('');
-    //     const [pokemonAbilities, setPokemonAbilities] = useState([])
-    //     const [pokemonStats, setPokemonStats] = useState([])
-    //     const [pokemonSpecies, setPokemonSpecies] = useState([])
-    //     const [pokemonEvolutionsId, setPokemonEvolutionsId] = useState();
-    //     const [loadingData, setLoadingData] = useState(false);
-    //     const [evolutionOne, setEvolutionOne] = useState('');
-    //     const [evolutionTwo, setEvolutionTwo] = useState<Array<String>>([]);
-    //     const [evolutionTree, setEvolutionTree] = useState<Array<String>>([]);
-    //     const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
-    //     const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
-    //     const [dataEvolution, setDataEvolution] = useState<String | null>();
-
-    //     useEffect(() => {
-    //         dato();
-    //     }, [name])
-
-    //     useEffect(() => {
-    //         getData();
-    //     }, [name])
-
-    //     const dato = () => {
-
-    //         setLoadingData(true)
-
-    //         getPokemonesByName(name)
-
-    //             .then((res) => {
-    //                 setPokemon(res.data);
-    //                 setPokemonImage(res.data.sprites.other.home.front_default)
-    //                 setPokemonAbilities(res.data.abilities);
-    //                 setPokemonStats(res.data.stats);
-    //                 setPokemonSpecies(res.data.species);
-
-
-    //                 let speciesId = res.data.species.url.split("/")[6];
-    //                 /* console.log(speciesId) */
-
-
-    //                 getSpeciesPokemon(parseInt(speciesId))
-    //                     .then((res) => {
-    //                         setPokemonEvolutionsId(res.data.evolution_chain.url)
-    //                         const evoId = (res.data.evolution_chain.url).split('/')[6];
-
-    //                         getEvolutions(parseInt(evoId))
-    //                             .then((res) => {
-    //                                 setEvolutionOne(res.data.chain.species.name);
-    //                                 setEvolutionTwo(res.data.chain.evolves_to?.map((item: Evolutions) => item.species.name));
-    //                                 setEvolutionTree(res.data.chain.evolves_to?.map((item : Evolutions) => item.evolves_to?.map((item: Evolutions) => item.species.name)));
-    //                                 check(res.data.chain.species.name, res.data.chain.evolves_to?.map((item : Evolutions) => item.species.name), res.data.chain.evolves_to?.map((item : Evolutions) => item.evolves_to?.map((item : Evolutions) => item.species.name)));
-    //                             })
-    //                     });
-
-    //            /*  })
-    //             .finally(() =>
-    //                 setLoadingData(false)
-    //             ) */
-    //     }
-
-    //     const check = (evolutionOne: String, evolutionTwo: any[], evolutionTree: any[]) => {
-
-    //         if (Array.isArray(evolutionTwo) && evolutionTwo?.length > 0) {
-    //             setTotalEvolutionsMedia(evolutionTwo.map((item) => item));
-
-    //         }
-    //         else {
-    //             setTotalEvolutionsMedia(evolutionTwo);
-    //         }
-
-    //         if (Array.isArray(evolutionTree) && evolutionTree?.length > 0) {
-    //             for (let i = 0; i < evolutionTree.length; i++) {
-    //                 if (evolutionTree[i] !== null) {
-
-    //                     setTotalEvolutionsFinal(prevList => prevList.concat(evolutionTree[i]));
-    //                 }
-    //             }
-    //         }
-    //         else {
-    //             setTotalEvolutionsFinal(prevList => prevList.concat(evolutionTree));
-    //             console.log(totalEvolutionsFinal);
-    //         }
-    //     }
-
-
-
-    //     const getData = () => {
-    //         localStorage.getItem('evoMedia');
-    //         setDataEvolution(localStorage.getItem('evoMedia'));
-    //     }
-
-    //     //console.log(dataEvolution)
-
-    //     if (loading) {
-    //         return (<Loading />);
-    //     } else if (pokemon) {
-    //         return (<div className='background-card'>
-    //             <Grid
-    //                 container
-    //                 flexDirection="row"
-    //                 justifyContent="center"
-    //                 alignItems="center"
-    //                 p="20"
-    //                 sx={{[theme.breakpoints.down('sm')]:{flexDirection:'column', justifyContent:'center' ,alignItems:'center'},
-    //             }}
-    //             >
-    //                 <Grid item
-    //                     justifyContent="center"
-    //                     alignItems="center"
-    //                     xs={12} md={12} lg={12}
-    //                     sx={{ margin: 2 }}>
-
-    //                     <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
-
-    //                         {dataEvolution == null ?
-    //                         (
-    //                         <Box display="flex" flexDirection="row" justifyContent="space-between">
-    //                        <Link underline='none' href={`/SeeDetails/${pokemon.id === 1 ? 1 : pokemon.id - 1}`}><button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
-    //                         </Link>
-    //                         <Link underline='none' href={`/SeeDetails/${pokemon.id + 1}`}><button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
-    //                         </Link> 
-    //                         </Box>
-    //                         )
-    //                          : (
-    //                             <Box display="flex" flexDirection="column"  height="100px" position="fixed" top="20px" left="20px"
-    //                             sx={{[theme.breakpoints.down('sm')]:{position: 'static', flexDirection:'column', justifyContent:'center' ,alignItems:'center'},
-    //             }}>
-    //                          <ButtonBack></ButtonBack>
-    //                          </Box>
-    //                          )}
-
-    //                         <CardPokemon
-    //                             pokemon={pokemon}
-    //                             pokemonName={pokemon.name}
-    //                             pokemonImage={pokemonImage}
-    //                             pokemonAbilities={pokemonAbilities}
-    //                             pokemonStats={pokemonStats}
-    //                             pokemonSpecies={pokemonSpecies}
-    //                             pokemonHeight={pokemon.height}
-    //                             pokemonWeight={pokemon.weight}
-    //                             pokemonEvolutionOne={evolutionOne}
-    //                             evolutionsMedia={totalEvolutionsMedia}
-    //                             evolutionsFinal={totalEvolutionsFinal}
-    //                         />
-
-
-    //                     </Box>
-
-    //                     {dataEvolution == null ?
-    //                         <Box display="flex"  justifyContent="right" alignItems="right" > {/* SAQUE direction="column" */}
-    //                         <Link underline='none' href='/home'><button><HomeRoundedIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></button>
-    //                         </Link>
-    //                     </Box>
-    //                          : (
-    //                             ''
-    //                             )}
-    //                 </Grid>
-    //             </Grid>
-    //         </div>)
-    //     }
-    //     else {
-    //         return (<NotFound />);
-    //     }
-
-    // } 
 }
 export default SeeDetails;
 
