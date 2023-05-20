@@ -212,7 +212,7 @@ const Home = () => {
                             //placeholder="Name pokemon"
                             value={pokemonName}
                             onChange={searchName}
-                            sx={{height:'1em'}}
+                         
                         //onChange={(e) => setPokemonName(e.target.value)}
                         />
                         <TextField
