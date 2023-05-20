@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Grid, Typography, Link } from '@mui/material';
 
-
 interface Props{
  listPokemon: Array<Pokemon>,
  //pokemonImage: Array<string>,
@@ -14,8 +13,6 @@ interface Pokemon{
 }
 
 const GridPokemon = ({listPokemon}: Props) => {
-
-    
 
     return (
         <Grid

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, Pagination, PaginationItem, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Pagination, PaginationItem, TextField, Typography, Checkbox, FormControlLabel, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import GridPokemon from '../components/GridPokemon';
 import Loading from '../components/Loading';
 import { Link as LinkPagination } from 'react-router-dom';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Error from '../components/Error';
+import SearchIcon from '@mui/icons-material/Search';
 
 const color = '#ffffff';
 
@@ -13,10 +14,9 @@ interface Pokemon {
     name: string;
 }
 
-
 const GET_POKEMONS = gql`
 query GETPOKEMONS($offset: Int!){
-  poke: pokemon_v2_pokemon(offset: $offset, limit: 20) {
+  pokemon: pokemon_v2_pokemon(offset: $offset, limit: 20) {
     id
     name
     pokemon_v2_pokemonsprites {
@@ -31,15 +31,51 @@ query GETPOKEMONS($offset: Int!){
 }`;
 
 
-
-const GET_POKEMON_BY_NAME = gql`
-  query GetPokemonByName($name: String!) {
-    poke: pokemon_v2_pokemon(where: {name: {_ilike: $name}}) {
+const GET_FILTERS = gql`
+  query GetPokemonByName($name: String, $isBaby: Boolean, $color: String, $minWeight: Int, $maxWeight: Int) {
+    pokemon: pokemon_v2_pokemon( where: {name: { _ilike: $name},
+        pokemon_v2_pokemonspecy: {is_baby: { _eq: $isBaby },
+          pokemon_v2_pokemoncolor: {name: {_ilike: $color}}},
+          weight: {_gte: $minWeight, _lte: $maxWeight}}) {
       name
+      height
+      weight
       id
     }
   }
 `;
+
+
+
+// const GET_FILTERS = gql`
+// query GET_FILTERS($name: String, $isBaby: Boolean!, $color: String, $minWeight: Int) {
+//     pokemon: pokemon_v2_pokemon(where: {name: {_ilike: $name}, 
+//       pokemon_v2_pokemonspecy: {is_baby: {_eq: $isBaby }, 
+//         pokemon_v2_pokemoncolor: {name: {_ilike: $color}}}, 
+//       weight: {_gte: $minWeight, _lte: 10}}) {
+//       id
+//       name
+//       height
+//       weight
+//     }
+//   }
+//   `;
+
+
+
+
+
+
+const GET_COLOR = gql`
+query GET_POKEMON_COLORS {
+    pokemon_v2_pokemoncolor {
+      id
+      name
+    }
+  }
+  `;
+
+
 
 const Home = () => {
 
@@ -48,20 +84,106 @@ const Home = () => {
     const page = parseInt(query.get('page') || '1', 10);
     const offset = (page - 1) * 20;
 
-    const [lookForPokemon, setLookForPokemon] = useState("");
+    const [pokemonName, setPokemonName] = useState('');
 
-    const [
-        fetchPokemon,
-        { data: pokemonData, error: pokemonError },
-    ] = useLazyQuery(GET_POKEMON_BY_NAME);
+    const [isBaby, setIsBaby] = useState(false);
+    const [color, setColor] = useState<String>("");
+    const [minWeight, setMinWeight] = useState<number>(0);
+    const [maxWeight, setMaxWeight] = useState<number>(100);
+    //const [selectedColorsOptions, setSelectedColorsOptions] = useState<Option[]>([]);
 
-    const { loading, error, data } = useQuery(GET_POKEMONS, { variables: { page, offset } });
+    const [fetchPokemon, { loading: loadingFilter, data: dataFilter }] = useLazyQuery(GET_FILTERS,
+        { variables: { name: `%${pokemonName}%`, isBaby, color, minWeight } });
+
+    const { loading, error, data, refetch } = useQuery(GET_POKEMONS, { variables: { page, offset } });
+
+    const { data: dataColor } = useQuery(GET_COLOR);
+
+    useEffect(() => {
+        if (dataColor && color.length === 0) {
+            setColor(`%`);
+        }
+    }, [dataColor, color]);
+
+    useEffect(() => {
+        setIsBaby(false);
+        setPokemonName('');
+    }, [page]);
 
     if (loading) return <Loading></Loading>;
     if (error) return <Error></Error>;
+    if (loadingFilter) return <Loading></Loading>;
 
     const countt = Math.ceil(data.cantidad.aggregate.count / 20);
     //console.log(data.cantidad.aggregate.count);
+
+    const searchName = (e: any) => {
+        setPokemonName(e.target.value);
+    }
+
+    const searchBaby = (e: any) => {
+        setIsBaby(e.target.checked);
+    }
+
+    const searchColor = (e: any) => {
+        setColor(e.target.value);
+    };
+
+    const searchMinWeight = (e: any) => {
+        setMinWeight(e.target.value);
+    }
+
+    const searchMaxWeight = (e: any) => {
+        setMaxWeight(e.target.value);
+    }
+
+
+    const search = (e: any) => {
+
+        // if (pokemonName.length > 0) {
+        //   let variables: any = {
+        //     name: `%${pokemonName}%`,
+        //     isBaby,
+        //   };
+
+        //   if (color && color !== 'Nothing') { // Si una opción diferente a "Nothing" fue seleccionada
+        //     variables.color = color;
+        //   }
+
+        //   fetchPokemon({
+        //     variables,
+        //   });
+
+        // } else {
+        //   console.log('entra');
+        //   refetch({ page, offset });
+        // }
+
+        let variables: any = {
+            name: `%${pokemonName}%`,
+            isBaby,
+            minWeight,
+            maxWeight,
+        };
+
+        // if (isBaby){
+        //     variables.isBaby = isBaby;
+        // } 
+
+        if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
+            variables.color = color;
+        }
+
+        // if (pokemonName && pokemonName.length > 0){
+        //     variables.name = `%${pokemonName}%`;
+        // } 
+
+        fetchPokemon({
+            variables
+        });
+    };
+
+    //console.log(dataColor.pokemon_v2_pokemoncolor);
 
     return (
         <div className='background-table'>
@@ -78,57 +200,89 @@ const Home = () => {
                     justifyContent="center"
                     xs={12} md={12} lg={12}
                 >
-                    <Box display="flex" flexDirection="column" justifyContent="flex-end" alignItems="center" padding={0} >
-                        <div>
-                            {/* <TextField
-                                id="standard-basic"
-                                label="Look for pokemon"
-                                variant="standard"
-                                placeholder="name pokemon"
-                                value={lookForPokemon}
-                                onChange={(event) => {
-                                    setLookForPokemon(event.target.value);
-                                }}
-                                
-                            /> */}
-                            <TextField
-                                id="standard-basic"
-                                label="Look for pokemon"
-                                variant="standard"
-                                placeholder="name pokemon"
-                                value={lookForPokemon}
-                                onChange={(event) => {
-                                    setLookForPokemon(event.target.value);
-                                    fetchPokemon({
-                                        variables: {
-                                            name: `%${event.target.value}%`,
-                                        },
-                                    });
-                                }}
-                            />
-                            {/* <Button sx={{ marginTop: '15px' }} onClick={() => {
-                                fetchPokemon({
-                                    variables: {
-                                        name: lookForPokemon,
-                                    },
-                                });
-                            }}><SavedSearchIcon sx={{
+                    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" padding={0} >
+
+                        <TextField
+                            id="standard-basic"
+                            //label="Look for a pokemon"
+                            variant="outlined"
+                            label={<span>Name pokemon</span>}
+                            //placeholder="Name pokemon"
+                            value={pokemonName}
+                            onChange={searchName}
+                        //onChange={(e) => setPokemonName(e.target.value)}
+                        />
+                        <TextField
+                            type="number"
+                            variant="outlined"
+                            value={minWeight}
+                            onChange={searchMinWeight}
+                            label={<span>Min Weight</span>}
+                            size="small"
+                        />
+
+                        <TextField
+                            type="number"
+                            variant="outlined"
+                            value={maxWeight}
+                            onChange={searchMaxWeight}
+                            label={<span>Max Weight</span>}
+                            size="small"
+                        />
+
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isBaby}
+                                    //onChange={(e) => setIsBaby(e.target.checked)}
+                                    onChange={searchBaby}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                            }
+                            label="¿Is a baby?"
+                        />
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-standard-label">Select color</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                value={color}
+                                onChange={searchColor}
+                                label="Age"
+                            >
+                                <MenuItem value={`%`}>
+                                    <em>All</em>
+                                </MenuItem>
+                                {dataColor?.pokemon_v2_pokemoncolor.map((item: any) => (
+                                    <MenuItem value={item.name}><em>{item.name}</em></MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <Button sx={{ marginTop: '15px' }}
+                            //onClick={fetchPokemon}>
+                            onClick={search}>
+                            <SearchIcon sx={{
                                 fontSize: 'large', width: '25px', height: '25px', color: '#212121', "&:hover": {
                                     backgroundColor: 'none',
                                 }
-                            }} /></Button> */}
-                        </div>
+                            }} />
+                        </Button>
 
-                        {pokemonData && pokemonData.poke.length == 0 ? (
-                            <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
-                                There is no pokemon!
-                            </Typography>
-                        ) :
-                            (" ")}
                     </Box>
 
-                    {pokemonData && pokemonData.poke.length > 0 ? (
-                        <GridPokemon listPokemon={pokemonData.poke} />
+
+                    {dataFilter && dataFilter.pokemon.length == 0 ? (
+                        <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                            There is no pokemon with the searched specifications
+                        </Typography>
+                    ) :
+                        (" ")}
+
+
+                    {dataFilter && dataFilter.pokemon.length > 0 ? (
+                        <GridPokemon listPokemon={dataFilter.pokemon} />
                     ) : (
                         <>
                             <Box display="flex" flexDirection="column" justifyContent="left" alignItems="center" padding={0} >
@@ -152,104 +306,15 @@ const Home = () => {
                                     )}
                                 />
                             </Box>
-                            <GridPokemon listPokemon={data.poke} />
+                            <Typography variant="h3" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                                Pokemon grid
+                            </Typography>
+                            <GridPokemon listPokemon={data.pokemon} />
                         </>
                     )}
                 </Grid>
             </Grid>
-        </div>
+        </div >
     );
 }
 export default Home;
-
-// const Home = () => {
-
-//     const [listPokemon, setListPokemon] = useState([])
-//     const [names, setNames] = useState([])
-//     const [pokemonImage, setPokemonImage] = useState((Object));
-//     const [count, setCount] = useState<any>()
-
-//     const location = useLocation();
-//     const query = new URLSearchParams(location.search);
-//     const page = parseInt(query.get('page') || '1', 10);
-
-//     useEffect(() => {
-
-//         getPokemones(page)
-//             .then((res) => {
-//                 setListPokemon(res.data.results)
-
-
-//                 const names = res.data.results.map((pokemon: Pokemon) => pokemon.name);
-//                 setNames(names);
-
-//                 console.log(names);
-
-//                 setCount(((res.data.count / 20) + (res.data.count % 20)))
-//             })
-//     }, [page])
-
-//     useEffect(() => {
-//         if (listPokemon.length > 0) {
-//             Promise.all(
-//                 names.map((name) => {
-//                     return getPokemonesByName(name)
-//                         .then((res) => {
-//                             return res.data.sprites.other.home.front_default;
-//                         });
-//                 })
-//             )
-//                 .then((images) => {
-//                     setPokemonImage(images);
-//                 })
-//                 .catch((error) => {
-//                     console.log(error);
-//                 });
-//         }
-//     }, [listPokemon, names]);
-
-//     console.log(pokemonImage);
-
-//     return (
-//         <div className='background-table'>
-//             <Grid
-//                 container
-//                 flexDirection="column"
-//                 justifyContent="center"
-//                 alignItems="center"
-//                 p="20"
-//                 height="100%"
-//                 paddingTop={'20px'}
-//                 paddingBottom={'20px'}
-//             >
-//                 <Pagination
-//                     page={page}
-//                     count={count}
-//                     renderItem={(item) => (
-//                         <PaginationItem
-//                             component={LinkPagination}
-//                             to={`/home${item.page === 1 ? '' : `?page=${item.page}`}`}
-//                             {...item}
-//                         />
-//                     )}
-//                 />
-
-//                 <Grid item
-//                     justifyContent="center"
-//                     alignItems="center"
-//                     xs={12} md={12} lg={12}
-//                 >
-//                     {listPokemon.length > 0 && pokemonImage.length > 0 ? (
-//                         <GridPokemon
-//                             listPokemon={listPokemon}
-//                             pokemonImage={pokemonImage}
-//                         />
-//                     ) : (
-//                         <div><Loading></Loading></div>
-//                     )}
-//                 </Grid>
-//             </Grid>
-//         </div>
-//     );
-// }
-// export default Home;
