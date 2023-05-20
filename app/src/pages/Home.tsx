@@ -137,7 +137,6 @@ const Home = () => {
         setMaxWeight(e.target.value);
     }
 
-
     const search = (e: any) => {
 
         // if (pokemonName.length > 0) {
@@ -170,9 +169,9 @@ const Home = () => {
         //     variables.isBaby = isBaby;
         // } 
 
-        if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
-            variables.color = color;
-        }
+        // if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
+        //     variables.color = color;
+        // }
 
         // if (pokemonName && pokemonName.length > 0){
         //     variables.name = `%${pokemonName}%`;
@@ -181,6 +180,12 @@ const Home = () => {
         fetchPokemon({
             variables
         });
+
+        if (dataFilter.pokemon.length == 0){
+            <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                            There is no pokemon with the searched specifications
+            </Typography>
+        }
     };
 
     //console.log(dataColor.pokemon_v2_pokemoncolor);
@@ -273,12 +278,12 @@ const Home = () => {
                     </Box>
 
 
-                    {dataFilter && dataFilter.pokemon.length == 0 ? (
+                    {/* {dataFilter && dataFilter.pokemon.length == 0 ? (
                         <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                             There is no pokemon with the searched specifications
                         </Typography>
                     ) :
-                        (" ")}
+                        (" ")} */}
 
 
                     {dataFilter && dataFilter.pokemon.length > 0 ? (
@@ -306,10 +311,12 @@ const Home = () => {
                                     )}
                                 />
                             </Box>
+                            
                             <Typography variant="h3" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                                 Pokemon grid
                             </Typography>
                             <GridPokemon listPokemon={data.pokemon} />
+
                         </>
                     )}
                 </Grid>
