@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, Pagination, PaginationItem, TextField, Typography, Checkbox, FormControlLabel, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Box, Button, Grid, Pagination, PaginationItem, TextField, Typography, Checkbox, FormControlLabel, MenuItem, Select, InputLabel, FormControl, InputBase } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import GridPokemon from '../components/GridPokemon';
 import Loading from '../components/Loading';
@@ -44,7 +44,7 @@ query GetFilters($name: String, $isBaby: Boolean, $color: String, $minWeight: In
     }
   }
   `;
-  
+
 const GET_COLOR = gql`
 query GET_POKEMON_COLOR {
     pokemon_v2_pokemoncolor {
@@ -70,7 +70,8 @@ const Home = () => {
     const [minWeight, setMinWeight] = useState<number>(0);
     const [maxWeight, setMaxWeight] = useState<number>(100);
     const [types, setTypes] = useState<string[]>([]);
-    //const [selectedColorsOptions, setSelectedColorsOptions] = useState<Option[]>([]);
+    const [pokemonExists, setPokemonExists] = useState(false);
+    
 
     const [fetchPokemon, { loading: loadingFilter, data: dataFilter }] = useLazyQuery(GET_FILTERS,
         { variables: { name: `%${pokemonName}%`, isBaby, color, minWeight, maxWeight, types } });
@@ -88,9 +89,9 @@ const Home = () => {
 
 
     useEffect(() => {
-        
 
-        if(dataColor && types.length === 0){
+
+        if (dataColor && types.length === 0) {
             setTypes(dataColor?.pokemon_v2_type?.map((item: any) => item.name));
         }
 
@@ -178,11 +179,11 @@ const Home = () => {
             variables
         });
 
+        
         if (dataFilter.pokemon.length === 0){
-            <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
-                            There is no pokemon with the searched specifications
-            </Typography>
+            setPokemonExists(true);
         }
+       
     };
 
     //console.log(dataColor.pokemon_v2_pokemoncolor);
@@ -205,16 +206,18 @@ const Home = () => {
                     <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" padding={0} >
 
                         <TextField
-                            id="standard-basic"
+                            id="outlined-controlled"
                             //label="Look for a pokemon"
                             variant="outlined"
                             label={<span>Name pokemon</span>}
                             //placeholder="Name pokemon"
                             value={pokemonName}
                             onChange={searchName}
-                         
-                        //onChange={(e) => setPokemonName(e.target.value)}
+                            size="small"
+                        
                         />
+
+                       
                         <TextField
                             type="number"
                             variant="outlined"
@@ -240,9 +243,11 @@ const Home = () => {
                                     //onChange={(e) => setIsBaby(e.target.checked)}
                                     onChange={searchBaby}
                                     inputProps={{ 'aria-label': 'controlled' }}
+                                    
                                 />
                             }
                             label="¿Is a baby?"
+                            
                         />
 
                         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -294,12 +299,17 @@ const Home = () => {
                     </Box>
 
 
-                    {/* {dataFilter && dataFilter.pokemon.length == 0 ? (
+                    {/* {dataFilter?.pokemon?.length == 0 &&
                         <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                             There is no pokemon with the searched specifications
-                        </Typography>
-                    ) :
-                        (" ")} */}
+                        </Typography>} */}
+
+                        {pokemonExists  &&
+                        <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                            There is no pokemon with the searched specifications
+                        </Typography>}
+
+                   
 
 
                     {dataFilter && dataFilter.pokemon.length > 0 ? (
@@ -327,12 +337,11 @@ const Home = () => {
                                     )}
                                 />
                             </Box>
-                            
+
                             <Typography variant="h3" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                                 Pokemon grid
                             </Typography>
                             <GridPokemon listPokemon={data.pokemon} />
-
                         </>
                     )}
                 </Grid>
