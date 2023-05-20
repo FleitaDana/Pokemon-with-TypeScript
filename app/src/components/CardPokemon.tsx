@@ -32,30 +32,15 @@ interface Evolution {
     name: string,
 }
 
-// interface TotalEvolutionsMedia {
-//     evolution: string,
-// }
-
-// interface TotalEvolutionsFinal {
-//     evolution: string,
-// }
-
 const img = "../assets/notFound.png"
 
 const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
-
-    // const [stats, setStats] = useState<Array<Stats>>([]);
-    // const [ability, setAbility] = useState<Array<Ability>>([]);
-    // const [totalEvolutionsMedia, setTotalEvolutionsMedia] = useState<Array<String>>([]);
-    // const [totalEvolutionsFinal, setTotalEvolutionsFinal] = useState<Array<String>>([]);
 
     const evo = true;
 
     function click() {
         localStorage.setItem('evoMedia', String(evo))
     }
-
-    //console.log(pokemonEvolutions);
 
     return (
         <Grid

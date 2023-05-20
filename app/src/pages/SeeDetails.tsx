@@ -88,23 +88,15 @@ const SeeDetails = () => {
 
                     <Box display="flex" flexDirection="column" justifyContent="left" alignItems="left" padding={0} >
 
-                        {dataEvolution == null ?
-                            (
-                                <Box display="flex" flexDirection="row" justifyContent="space-between">
-                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><Button><ArrowBackIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></Button>
-                                    </Link>
-                                    <Link underline='none' href={`/SeeDetails/${data.poke[0].name}`}><Button><ArrowForwardIcon sx={{ fontSize: 'large', width: '20px', height: '20px' }} /></Button>
-                                    </Link>
-                                </Box>
-                            )
-                            : (
+                        {dataEvolution != null &&
+                            
                                 <Box display="flex" flexDirection="column" height="100px" position="fixed" top="20px" left="20px"
                                     sx={{
                                         [theme.breakpoints.down('sm')]: { position: 'static', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
                                     }}>
                                     <ButtonBack></ButtonBack>
                                 </Box>
-                            )}
+                            }
 
                         <CardPokemon
                             pokemon={data.poke[0]}

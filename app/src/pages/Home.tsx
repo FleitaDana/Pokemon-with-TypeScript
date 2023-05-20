@@ -101,6 +101,7 @@ const Home = () => {
     useEffect(() => {
         setIsBaby(false);
         setPokemonName('');
+        setPokemonExists(false);
     }, [page]);
 
     if (loading) return <Loading></Loading>;
@@ -108,7 +109,7 @@ const Home = () => {
     if (loadingFilter) return <Loading></Loading>;
 
     const countt = Math.ceil(data.cantidad.aggregate.count / 20);
-    //console.log(data.cantidad.aggregate.count);
+    
 
     const searchName = (e: any) => {
         setPokemonName(e.target.value);
@@ -163,30 +164,20 @@ const Home = () => {
             types,
         };
 
-        // if (isBaby){
-        //     variables.isBaby = isBaby;
-        // } 
-
-        if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
+        if (color || color !== '') { 
             variables.color = color;
         }
-
-        // if (pokemonName && pokemonName.length > 0){
-        //     variables.name = `%${pokemonName}%`;
-        // } 
 
         fetchPokemon({
             variables
         });
 
         
-        if (dataFilter.pokemon.length === 0){
+        
             setPokemonExists(true);
-        }
+        
        
     };
-
-    //console.log(dataColor.pokemon_v2_pokemoncolor);
 
     return (
         <div className='background-table'>
@@ -207,14 +198,12 @@ const Home = () => {
 
                         <TextField
                             id="outlined-controlled"
-                            //label="Look for a pokemon"
                             variant="outlined"
                             label={<span>Name pokemon</span>}
-                            //placeholder="Name pokemon"
                             value={pokemonName}
                             onChange={searchName}
                             size="small"
-                        
+                            sx={{margin: 1}}
                         />
 
                        
@@ -225,6 +214,7 @@ const Home = () => {
                             onChange={searchMinWeight}
                             label={<span>Min Weight</span>}
                             size="small"
+                            sx={{margin: 1}}
                         />
 
                         <TextField
@@ -234,6 +224,7 @@ const Home = () => {
                             onChange={searchMaxWeight}
                             label={<span>Max Weight</span>}
                             size="small"
+                            sx={{margin: 1}}
                         />
 
                         <FormControlLabel
@@ -247,14 +238,14 @@ const Home = () => {
                                 />
                             }
                             label="¿Is a baby?"
-                            
+
                         />
 
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="demo-simple-select-standard-label">Select color</InputLabel>
+                        <FormControl sx={{minWidth: 120, m: 1}}>
+                            <InputLabel id="demo-simple-select-label">Color</InputLabel>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
                                 value={color}
                                 onChange={searchColor}
                                 label="Age"
@@ -268,11 +259,11 @@ const Home = () => {
                             </Select>
                         </FormControl>
 
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="demo-simple-select-standard-label">Select type</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
+                        <FormControl sx={{minWidth: 120}}>
+                            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                            <Select 
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
                                 value={types}
                                 onChange={searchTypes}
                                 label="Age"
@@ -285,6 +276,7 @@ const Home = () => {
                                 ))}
                             </Select>
                         </FormControl>
+
 
                         <Button sx={{ marginTop: '15px' }}
                             //onClick={fetchPokemon}>
@@ -299,15 +291,15 @@ const Home = () => {
                     </Box>
 
 
-                    {/* {dataFilter?.pokemon?.length == 0 &&
+                     {dataFilter?.pokemon?.length === 0 && pokemonExists &&
+                        <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                            There is no pokemon with the searched specifications
+                        </Typography>} 
+
+                        {/* {pokemonExists  &&
                         <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                             There is no pokemon with the searched specifications
                         </Typography>} */}
-
-                        {pokemonExists  &&
-                        <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
-                            There is no pokemon with the searched specifications
-                        </Typography>}
 
                    
 

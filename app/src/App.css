@@ -19,7 +19,7 @@
 }
 
 .background-table{
-  background-color: darkslategray;
-  height: 100%;
+  background: linear-gradient(#006064,#00838f,#0097a7);
+  height: 2300px;
 }
 
