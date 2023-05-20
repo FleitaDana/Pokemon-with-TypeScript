@@ -30,52 +30,31 @@ query GETPOKEMONS($offset: Int!){
   }
 }`;
 
-
 const GET_FILTERS = gql`
-  query GetPokemonByName($name: String, $isBaby: Boolean, $color: String, $minWeight: Int, $maxWeight: Int) {
-    pokemon: pokemon_v2_pokemon( where: {name: { _ilike: $name},
-        pokemon_v2_pokemonspecy: {is_baby: { _eq: $isBaby },
-          pokemon_v2_pokemoncolor: {name: {_ilike: $color}}},
-          weight: {_gte: $minWeight, _lte: $maxWeight}}) {
+query GetFilters($name: String, $isBaby: Boolean, $color: String, $minWeight: Int, $maxWeight: Int, $types: [String]) {
+    pokemon: pokemon_v2_pokemon(where: {name: {_ilike: $name}, 
+      pokemon_v2_pokemonspecy: {is_baby: {_eq: $isBaby}, 
+        pokemon_v2_pokemoncolor: {name: {_ilike: $color}}}, 
+      weight: {_gte: $minWeight, _lte: $maxWeight}, 
+      pokemon_v2_pokemontypes: {pokemon_v2_type: {name: {_in: $types}}}}) {
+      id
       name
       height
       weight
-      id
-    }
-  }
-`;
-
-
-
-// const GET_FILTERS = gql`
-// query GET_FILTERS($name: String, $isBaby: Boolean!, $color: String, $minWeight: Int) {
-//     pokemon: pokemon_v2_pokemon(where: {name: {_ilike: $name}, 
-//       pokemon_v2_pokemonspecy: {is_baby: {_eq: $isBaby }, 
-//         pokemon_v2_pokemoncolor: {name: {_ilike: $color}}}, 
-//       weight: {_gte: $minWeight, _lte: 10}}) {
-//       id
-//       name
-//       height
-//       weight
-//     }
-//   }
-//   `;
-
-
-
-
-
-
-const GET_COLOR = gql`
-query GET_POKEMON_COLORS {
-    pokemon_v2_pokemoncolor {
-      id
-      name
     }
   }
   `;
-
-
+  
+const GET_COLOR = gql`
+query GET_POKEMON_COLOR {
+    pokemon_v2_pokemoncolor {
+        name
+    }
+    pokemon_v2_type {
+        name
+    }
+  }
+  `;
 
 const Home = () => {
 
@@ -90,10 +69,11 @@ const Home = () => {
     const [color, setColor] = useState<String>("");
     const [minWeight, setMinWeight] = useState<number>(0);
     const [maxWeight, setMaxWeight] = useState<number>(100);
+    const [types, setTypes] = useState<string[]>([]);
     //const [selectedColorsOptions, setSelectedColorsOptions] = useState<Option[]>([]);
 
     const [fetchPokemon, { loading: loadingFilter, data: dataFilter }] = useLazyQuery(GET_FILTERS,
-        { variables: { name: `%${pokemonName}%`, isBaby, color, minWeight } });
+        { variables: { name: `%${pokemonName}%`, isBaby, color, minWeight, maxWeight, types } });
 
     const { loading, error, data, refetch } = useQuery(GET_POKEMONS, { variables: { page, offset } });
 
@@ -103,7 +83,19 @@ const Home = () => {
         if (dataColor && color.length === 0) {
             setColor(`%`);
         }
+
     }, [dataColor, color]);
+
+
+    useEffect(() => {
+        
+
+        if(dataColor && types.length === 0){
+            setTypes(dataColor?.pokemon_v2_type?.map((item: any) => item.name));
+        }
+
+    }, [dataColor, types]);
+
 
     useEffect(() => {
         setIsBaby(false);
@@ -137,6 +129,10 @@ const Home = () => {
         setMaxWeight(e.target.value);
     }
 
+    const searchTypes = (e: any) => {
+        setTypes(e.target.value);
+    };
+
     const search = (e: any) => {
 
         // if (pokemonName.length > 0) {
@@ -163,15 +159,16 @@ const Home = () => {
             isBaby,
             minWeight,
             maxWeight,
+            types,
         };
 
         // if (isBaby){
         //     variables.isBaby = isBaby;
         // } 
 
-        // if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
-        //     variables.color = color;
-        // }
+        if (color || color !== '') { // Si una opción diferente a "Nothing" fue seleccionada
+            variables.color = color;
+        }
 
         // if (pokemonName && pokemonName.length > 0){
         //     variables.name = `%${pokemonName}%`;
@@ -181,7 +178,7 @@ const Home = () => {
             variables
         });
 
-        if (dataFilter.pokemon.length == 0){
+        if (dataFilter.pokemon.length === 0){
             <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                             There is no pokemon with the searched specifications
             </Typography>
@@ -215,6 +212,7 @@ const Home = () => {
                             //placeholder="Name pokemon"
                             value={pokemonName}
                             onChange={searchName}
+                            sx={{height:'1em'}}
                         //onChange={(e) => setPokemonName(e.target.value)}
                         />
                         <TextField
@@ -260,6 +258,24 @@ const Home = () => {
                                     <em>All</em>
                                 </MenuItem>
                                 {dataColor?.pokemon_v2_pokemoncolor.map((item: any) => (
+                                    <MenuItem value={item.name}><em>{item.name}</em></MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-standard-label">Select type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                value={types}
+                                onChange={searchTypes}
+                                label="Age"
+                            >
+                                <MenuItem value={types}>
+                                    <em>All</em>
+                                </MenuItem>
+                                {dataColor?.pokemon_v2_type.map((item: any) => (
                                     <MenuItem value={item.name}><em>{item.name}</em></MenuItem>
                                 ))}
                             </Select>
