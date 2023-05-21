@@ -7,6 +7,7 @@ import { Link as LinkPagination } from 'react-router-dom';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Error from '../components/Error';
 import SearchIcon from '@mui/icons-material/Search';
+import theme from '../assets/Theme';
 
 const color = '#ffffff';
 
@@ -188,6 +189,7 @@ const Home = () => {
                 height="100%"
                 paddingTop={'20px'}
                 paddingBottom={'20px'}
+
             >
                 <Grid item
                     justifyContent="center"
@@ -196,7 +198,10 @@ const Home = () => {
                         md={12}
                         lg={12}
                 >
-                    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" padding={0} >
+                    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" padding={0} 
+                    sx={{
+                        [theme.breakpoints.down('sm')]: {  flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
+                    }}>
 
                         <TextField
                             id="outlined-controlled"
