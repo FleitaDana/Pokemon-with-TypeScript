@@ -53,9 +53,9 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
                 justifyContent="center"
                 alignItems="center"
                 xs={12} md={12} lg={12}
-                sx={{ margin: 3}}>
+                sx={{ margin: 3, width: 300}}>
 
-                <Card sx={{ transition: "0.2s", "&:hover": { transform: "scale(1.05)" }, display: 'flex', alignContent: 'center', justifyContent: 'center', boxShadow: 10, border: 2, widht:'100px' }}>
+                <Card sx={{ transition: "0.2s", "&:hover": { transform: "scale(1.05)" }, display: 'flex', alignContent: 'center', justifyContent: 'center', boxShadow: 10, border: 2, widht:'100px', borderRadius: 30 }}>
                     <CardActionArea>
 
                         <CardHeader sx={{ color: 'grey' }}
@@ -70,7 +70,7 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
                         <CardContent sx={{ fontStyle: 'oblique' }}> {/* SAQUE m=4 */}
 
                             <Typography gutterBottom variant="h4" component="div" align='center'>
-                                {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                               {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
 
                             </Typography>
 

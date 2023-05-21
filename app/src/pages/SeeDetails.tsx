@@ -104,14 +104,12 @@ const SeeDetails = () => {
                         />
                     </Box>
 
-                    {dataEvolution == null ?
+                    {dataEvolution == null &&
                         <Box display="flex" justifyContent="right" alignItems="right" > 
                             <Link underline='none' href='/home'><button><HomeRoundedIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
                             </Link>
                         </Box>
-                        : (
-                            ''
-                        )}
+                        }
                 </Grid>
             </Grid>
         </div>)

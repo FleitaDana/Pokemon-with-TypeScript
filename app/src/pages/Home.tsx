@@ -238,14 +238,12 @@ const Home = () => {
                             control={
                                 <Checkbox
                                     checked={isBaby}
-                                    //onChange={(e) => setIsBaby(e.target.checked)}
                                     onChange={searchBaby}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                     
                                 />
                             }
-                            label="¿Is a baby?"
-
+                            label="¿Is a baby?" 
                         />
 
                         <FormControl sx={{minWidth: 120, m: 1}}>
@@ -307,10 +305,10 @@ const Home = () => {
                         <GridPokemon listPokemon={dataFilter.pokemon} />
                     ) : (
                         <>
-                            <Box display="flex" flexDirection="column" justifyContent="left" alignItems="center" padding={0} >
+                            <Box display="flex" flexDirection="column" justifyContent="left" alignItems="center" padding={0} marginTop={2} >
                                 <Pagination
                                     variant="outlined"
-                                    shape="rounded"
+                                    
                                     page={page}
                                     count={countt}
                                     renderItem={(item) => (
@@ -329,7 +327,7 @@ const Home = () => {
                                 />
                             </Box>
 
-                            <Typography variant="h3" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
+                            <Typography variant="h3" color="white" align='center' sx={{ fontStyle: 'oblique', marginTop: 3 }}>
                                 Pokemon grid
                             </Typography>
                             <GridPokemon listPokemon={data.pokemon} />
