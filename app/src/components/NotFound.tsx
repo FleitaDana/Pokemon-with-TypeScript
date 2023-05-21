@@ -4,7 +4,7 @@ import notFoundImg from '../assets/notFound';
 
 const NotFound = () => {
 
-return(
+return(<div className='background'>
 <Grid
             container
             direction="column"
@@ -26,6 +26,7 @@ return(
                 </Box>
             </Grid>
         </Grid>
+        </div>
 );
 } 
 export default NotFound;

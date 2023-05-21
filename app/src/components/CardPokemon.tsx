@@ -53,7 +53,7 @@ const CardPokemon = ({ pokemon, pokemonEvolutions }: Props) => {
                 justifyContent="center"
                 alignItems="center"
                 xs={12} md={12} lg={12}
-                sx={{ margin: 3 }}>
+                sx={{ margin: 3}}>
 
                 <Card sx={{ transition: "0.2s", "&:hover": { transform: "scale(1.05)" }, display: 'flex', alignContent: 'center', justifyContent: 'center', boxShadow: 10, border: 2, widht:'100px' }}>
                     <CardActionArea>

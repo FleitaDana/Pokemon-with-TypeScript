@@ -18,8 +18,16 @@
   display: flex;
 }
 
-.background-table{
-  background: linear-gradient(#006064,#00838f,#0097a7);
-  height: 2300px;
+.background-grilla{
+  /* background: linear-gradient(#006064,#00838f,#0097a7); */
+  /* background: conic-gradient(at 0% 30%, #006064 10%, #00838f 30%, #0097a7 50%); */
+  background: conic-gradient(at 0% 30%, #18ffff  10%, #00838f 30%, #006064  50%);
+  height: 100%;
+  background-size: cover; 
 }
 
+.background{
+  background: conic-gradient(at 0% 30%, #18ffff  10%, #00838f 30%, #006064  50%);
+  height: 100vh;
+  background-size: cover; 
+}

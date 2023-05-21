@@ -101,7 +101,11 @@ const Home = () => {
     useEffect(() => {
         setIsBaby(false);
         setPokemonName('');
+        setMinWeight(0);
+        setMaxWeight(100);
         setPokemonExists(false);
+        setColor(`%`);
+        //setTypes(dataColor?.pokemon_v2_type?.map((item: any) => item.name));
     }, [page]);
 
     if (loading) return <Loading></Loading>;
@@ -171,16 +175,11 @@ const Home = () => {
         fetchPokemon({
             variables
         });
-
-        
-        
             setPokemonExists(true);
-        
-       
     };
 
     return (
-        <div className='background-table'>
+        <div className='background-grilla'>
             <Grid
                 container
                 flexDirection="row"
@@ -192,7 +191,10 @@ const Home = () => {
             >
                 <Grid item
                     justifyContent="center"
-                    xs={12} md={12} lg={12}
+                    
+                    xs={12}
+                        md={12}
+                        lg={12}
                 >
                     <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" padding={0} >
 
@@ -295,14 +297,6 @@ const Home = () => {
                         <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
                             There is no pokemon with the searched specifications
                         </Typography>} 
-
-                        {/* {pokemonExists  &&
-                        <Typography variant="h6" color="white" align='center' sx={{ fontStyle: 'oblique' }}>
-                            There is no pokemon with the searched specifications
-                        </Typography>} */}
-
-                   
-
 
                     {dataFilter && dataFilter.pokemon.length > 0 ? (
                         <GridPokemon listPokemon={dataFilter.pokemon} />

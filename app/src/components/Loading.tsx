@@ -4,6 +4,7 @@ import loadingImg from '../assets/loading';
 
 const Loading = () => {
     return (
+        <div className='background'>
         <Grid
             container
             direction="column"
@@ -24,6 +25,7 @@ const Loading = () => {
                 </Box>
             </Grid>
         </Grid>
+        </div>
     );
 }
 export default Loading;
