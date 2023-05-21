@@ -46,9 +46,7 @@ const GridPokemon = ({ listPokemon }: Props) => {
                         margin={2}
                         width={15}
                     >
-                        <Link underline="none" color="#212121" href={`/SeeDetails/${pokemon.name}`} sx={{ margin: "auto" }}>
-                            
-                            
+                        <Link underline="none" color="#212121" href={`/SeeDetails/${pokemon.name}`} sx={{ margin: "auto" }}> 
 
                             <Box flex-direction="column" display="flex" justifyContent="center" alignItems="center" sx={{ margin: 0 }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
