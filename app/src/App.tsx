@@ -5,6 +5,8 @@ import SeeDetails from './pages/SeeDetails';
 import Main from './pages/Main';
 import Error404 from './pages/Error404';
 import { useEffect, useState } from 'react';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { Box } from '@mui/material';
 
 
 function App() {
@@ -70,11 +72,15 @@ function App() {
         <source  type="audio/mpeg" />
       </audio> */}
       
-      <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'} Music</button>
+      {/* <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'} Music</button> */}
       
       {/* Other components */}
       
     
+      <Box display="flex" justifyContent="right" alignItems="right" position= "static"> 
+                            <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'}<VolumeUpIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
+                            
+                        </Box>
 
     <Router>
       <Routes>
