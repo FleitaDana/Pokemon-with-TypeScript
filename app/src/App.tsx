@@ -25,7 +25,7 @@ function App() {
 
   // const toggleMusic = () => {
   //   const audio = new Audio('https://s17.aconvert.com/convert/p3r68-cdx67/4cb12-ksfal.mp3');
-    
+
   //   if (isPlaying) {
   //     audio.pause();
   //   } else {
@@ -34,16 +34,18 @@ function App() {
   //   setIsPlaying(!isPlaying);
   // };
 
-//   useEffect(() => {
+  //   useEffect(() => {
 
 
-//     setIsPlaying(true);
+  //     setIsPlaying(true);
 
-// }, []);
+  // }, []);
 
 
   const [isPlaying, setIsPlaying] = useState(true);
-  const [audio] = useState(new Audio('https://s17.aconvert.com/convert/p3r68-cdx67/4cb12-ksfal.mp3'));
+  // const [audio] = useState(new Audio('https://s17.aconvert.com/convert/p3r68-cdx67/4cb12-ksfal.mp3'));
+  const [audio] = useState(new Audio('./assets/audio/cancionApp.mp3'));
+
 
   useEffect(() => {
     audio.volume = 0.5;
@@ -53,7 +55,7 @@ function App() {
       audio.pause();
     };
   }, []);
-  
+
   const toggleMusic = () => {
     if (isPlaying) {
       audio.pause();
@@ -62,7 +64,7 @@ function App() {
     }
     setIsPlaying(!isPlaying);
   };
-  
+
 
   return (
     // <div className='App-header'>
@@ -71,26 +73,25 @@ function App() {
       <audio id="pokemon-music" loop>
         <source  type="audio/mpeg" />
       </audio> */}
-      
-      {/* <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'} Music</button> */}
-      
-      {/* Other components */}
-      
-    
-      <Box display="flex" justifyContent="right" alignItems="right" position= "static"> 
-                            <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'}<VolumeUpIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
-                            
-                        </Box>
 
-    <Router>
-      <Routes>
-        <Route path='/' element={<Main />}></Route>
-        <Route path='/Home' element={<Home />}></Route>
-        <Route path='/SeeDetails/:name' element={<SeeDetails/>}></Route>
-        <Route path='*' element={<Error404 />}></Route>
-      </Routes>
-    </Router>
-     </div>
+      {/* <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'} Music</button> */}
+
+      {/* Other components */}
+
+
+      <Box display="flex" justifyContent="right" alignItems="right" position="static">
+        <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'}<VolumeUpIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
+      </Box>
+
+      <Router>
+        <Routes>
+          <Route path='/' element={<Main />}></Route>
+          <Route path='/Home' element={<Home />}></Route>
+          <Route path='/SeeDetails/:name' element={<SeeDetails />}></Route>
+          <Route path='*' element={<Error404 />}></Route>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 export default App;
