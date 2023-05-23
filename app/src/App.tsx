@@ -11,6 +11,10 @@ import { Box } from '@mui/material';
 
 function App() {
 
+
+  /* "La musica no anda porque la URL utilizada se elimina a las 2hs de haber sigo creada, 
+  hay que ver como utilizo la musica descargada en el proyecto" */
+
   // useEffect(() => {
   //   const audio = new Audio('https://s17.aconvert.com/convert/p3r68-cdx67/4cb12-ksfal.mp3');
   //   audio.volume = 0.5; // Establece el volumen a la mitad
@@ -35,17 +39,13 @@ function App() {
   // };
 
   //   useEffect(() => {
-
-
   //     setIsPlaying(true);
-
   // }, []);
 
 
   const [isPlaying, setIsPlaying] = useState(true);
   // const [audio] = useState(new Audio('https://s17.aconvert.com/convert/p3r68-cdx67/4cb12-ksfal.mp3'));
-  const [audio] = useState(new Audio('./assets/audio/cancionApp.mp3'));
-
+  const [audio] = useState(new Audio('https://s31.aconvert.com/convert/p3r68-cdx67/77y5g-7ubtj.mp3')); //esta linea
 
   useEffect(() => {
     audio.volume = 0.5;
@@ -65,7 +65,6 @@ function App() {
     setIsPlaying(!isPlaying);
   };
 
-
   return (
     // <div className='App-header'>
     <div className="App">
@@ -77,8 +76,6 @@ function App() {
       {/* <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'} Music</button> */}
 
       {/* Other components */}
-
-
       <Box display="flex" justifyContent="right" alignItems="right" position="static">
         <button onClick={toggleMusic}>{isPlaying ? 'Stop' : 'Play'}<VolumeUpIcon sx={{ fontSize: 'large', width: '20px', height: '20px', borderRadius: '50%' }} /></button>
       </Box>
